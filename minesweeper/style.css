@@ -18,9 +18,17 @@ border: black 2px solid;
 }
 
 p{
+  position: relative;
   height: 40px;
+  width: 40px;
   font-size: 24px;
   border: black 2px solid;
+  color:black;
+  align-content: center;
+}
+img {
+  height: inherit;
+  width: inherit;
 }
 .cell{
   height: 40px;

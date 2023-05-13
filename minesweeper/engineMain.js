@@ -11,22 +11,58 @@ function cellCreating(cellCount) {
   }
 }
 
+function bombRandoming(arr, bmbsCount, ammountPiles) {
+  while (arr.length < bmbsCount) {
+    const randomNumber = Math.floor(Math.random() * ammountPiles) + 1;
+    if (!arr.includes(randomNumber)) {
+      arr.push(randomNumber);
+    }
+  }
+}
+
 function gameStarting(width, height, ammountsBomb) {
   //const field = document.querySelector('.field');
   const cellsCount = width * height;
   cellCreating(cellsCount);
   const cells = document.querySelectorAll('.cell');
   const arrCells = [...cells];
-  console.log(cells);
+
+  const bombs = [];
+  bombRandoming(bombs, ammountsBomb, cellsCount);
+
+  function isBomb(row, column) {
+    const index = row * width + column;
+
+    return bombs.includes(index);
+  }
+
+  function open(row, column) {
+    const index = row * width + column;
+    const cell = cells[index];
+
+    cell.disabled = true;
+
+    if (isBomb(row, column)) {
+      const imageBomb = document.createElement('img');
+      imageBomb.src = 'bomb.png';
+      cell.appendChild(imageBomb);
+      const explSound = new Audio('explosion.wav');
+      explSound.play();
+    } else {
+      const clickSound = new Audio('notification.wav');
+      clickSound.play();
+    }
+  }
 
   bodyHTML.addEventListener('click', (event) => {
     if (event.target.tagName === 'P') {
       const index = arrCells.indexOf(event.target);
-      console.log(index, 'indexOf');
-      const clickSound = new Audio('notification.wav');
-      clickSound.play();
+      cells[index].classList.add('check');
+      const column = index % width;
+      const row = (index - column) / width;
+      open(row, column);
     }
   });
 }
 
-gameStarting(8, 8, 10);
+gameStarting(8, 8, 15);
