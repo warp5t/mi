@@ -14,7 +14,7 @@ body{
 .field {
 display: grid;
 grid-template-columns: repeat(8, 40px);
-border: black 2px solid;
+border: black 1px solid;
 }
 
 p{
@@ -22,7 +22,7 @@ p{
   height: 40px;
   width: 40px;
   font-size: 24px;
-  border: black 2px solid;
+  border: black 1px solid;
   color:black;
   align-content: center;
 }
@@ -30,10 +30,10 @@ img {
   height: inherit;
   width: inherit;
 }
-.cell{
+/* .cell{
   height: 40px;
   border: black 2px solid;
-}
+} */
 .check{
-  background-color: blueviolet;
+  background-color: rgb(231, 250, 124);
 }

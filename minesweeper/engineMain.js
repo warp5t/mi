@@ -2,6 +2,8 @@ const cellElement = document.createElement('div');
 const bodyHTML = document.getElementById('body');
 cellElement.classList.add('field');
 bodyHTML.append(cellElement);
+let permisSpreadBomb = true;
+const bombs = [];
 
 function cellCreating(cellCount) {
   for (let i = 0; cellCount > i; i += 1) {
@@ -11,10 +13,11 @@ function cellCreating(cellCount) {
   }
 }
 
-function bombRandoming(arr, bmbsCount, ammountPiles) {
+function bombRandoming(arr, bmbsCount, ammountPiles, indexFirstStep) {
+  console.log(indexFirstStep, ' - indexFirstStep');
   while (arr.length < bmbsCount) {
     const randomNumber = Math.floor(Math.random() * ammountPiles) + 1;
-    if (!arr.includes(randomNumber)) {
+    if (!arr.includes(randomNumber) && randomNumber !== indexFirstStep) {
       arr.push(randomNumber);
     }
   }
@@ -27,22 +30,21 @@ function gameStarting(width, height, ammountsBomb) {
   const cells = document.querySelectorAll('.cell');
   const arrCells = [...cells];
 
-  const bombs = [];
-  bombRandoming(bombs, ammountsBomb, cellsCount);
+ // bombRandoming(bombs, ammountsBomb, cellsCount);
 
-  function isBomb(row, column) {
+  function bombChecking(row, column) {
     const index = row * width + column;
 
     return bombs.includes(index);
   }
 
-  function open(row, column) {
+  function cellOpening(row, column) {
     const index = row * width + column;
     const cell = cells[index];
 
     cell.disabled = true;
 
-    if (isBomb(row, column)) {
+    if (bombChecking(row, column)) {
       const imageBomb = document.createElement('img');
       imageBomb.src = 'bomb.png';
       cell.appendChild(imageBomb);
@@ -57,12 +59,17 @@ function gameStarting(width, height, ammountsBomb) {
   bodyHTML.addEventListener('click', (event) => {
     if (event.target.tagName === 'P') {
       const index = arrCells.indexOf(event.target);
+      if (permisSpreadBomb === true) {
+        console.log('permission', index);
+        bombRandoming(bombs, ammountsBomb, cellsCount, index);
+        permisSpreadBomb = false;
+      }
       cells[index].classList.add('check');
       const column = index % width;
       const row = (index - column) / width;
-      open(row, column);
+      cellOpening(row, column);
     }
   });
 }
 
-gameStarting(8, 8, 15);
+gameStarting(8, 8, 55);
