@@ -1,0 +1,28 @@
+*{
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 700px;
+}
+
+.field {
+display: grid;
+grid-template-columns: repeat(8, 40px);
+border: black 2px solid;
+}
+
+button{
+  height: 40px;
+  font-size: 24px;
+  border: black 2px solid;
+}
+.cell{
+  height: 40px;
+  border: black 2px solid;
+}
