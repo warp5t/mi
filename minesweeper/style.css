@@ -17,7 +17,7 @@ grid-template-columns: repeat(8, 40px);
 border: black 2px solid;
 }
 
-button{
+p{
   height: 40px;
   font-size: 24px;
   border: black 2px solid;
@@ -25,4 +25,7 @@ button{
 .cell{
   height: 40px;
   border: black 2px solid;
+}
+.check{
+  background-color: blueviolet;
 }
