@@ -4,6 +4,7 @@ const bodyHTML = document.getElementById('body');
 let permisSpreadBomb = true;
 const bombs = [];
 const displayTime = document.createElement('div');
+let codeColor;
 displayTime.classList.add('displayTime');
 
 containerField.append(containerCells);
@@ -84,12 +85,47 @@ function gameStarting(width, height, ammountsBomb) {
     return bombs.includes(index);
   }
 
+  function probabilitySearching(row, column) {
+    let count = 0;
+    for (let x = -1; x <= 1; x += 1) {
+      for (let y = -1; y <= 1; y += 1) {
+        if (bombChecking(row + y, column + x)) {
+          count += 1;
+        }
+      }
+    }
+    return count;
+  }
+
+  function cellColoring(count, index) {
+    if (count === 0) {
+      cells[index].classList.add('colorCode0');
+      cells[index].textContent = ' ';
+    } else if (count === 1) {
+      cells[index].classList.add('colorCode1');
+      cells[index].textContent = count;
+    } else if (count === 2) {
+      cells[index].classList.add('colorCode2');
+      cells[index].textContent = count;
+    } else if (count === 3) {
+      cells[index].classList.add('colorCode3');
+      cells[index].textContent = count;
+    } else if (count === 4) {
+      cells[index].classList.add('colorCode4');
+      cells[index].textContent = count;
+    } else if (count === 5) {
+      cells[index].classList.add('colorCode5');
+      cells[index].textContent = count;
+    } else {
+      cells[index].textContent = count;
+    }
+  }
+
   function cellOpening(row, column) {
     const index = row * width + column;
     const cell = cells[index];
 
-    cell.disabled = true;
-
+    const count = probabilitySearching(row, column);
     if (bombChecking(row, column)) {
       const imageBomb = document.createElement('img');
       imageBomb.src = 'bomb.png';
@@ -99,6 +135,11 @@ function gameStarting(width, height, ammountsBomb) {
     } else {
       const clickSound = new Audio('notification.wav');
       clickSound.play();
+      cellColoring(count, index);
+      // if (count !== 0) {
+      //   cells[index].textContent = count;
+      //   cells[index].classList.add('colorCode0');
+      // }
     }
   }
 
@@ -106,11 +147,10 @@ function gameStarting(width, height, ammountsBomb) {
     if (event.target.tagName === 'P') {
       const index = arrCells.indexOf(event.target);
       if (permisSpreadBomb === true) {
-        console.log('permission', index);
         bombRandoming(bombs, ammountsBomb, cellsCount, index);
         permisSpreadBomb = false;
       }
-      cells[index].classList.add('check');
+     // cells[index].classList.add('check');
       const column = index % width;
       const row = (index - column) / width;
       cellOpening(row, column);
@@ -118,4 +158,4 @@ function gameStarting(width, height, ammountsBomb) {
   });
 }
 
-gameStarting(8, 8, 55);
+gameStarting(8, 8, 15);

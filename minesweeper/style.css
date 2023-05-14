@@ -28,13 +28,14 @@ border: black 1px solid;
 }
 
 p{
+  display: flex;
+  justify-content: center;
   position: relative;
   height: 40px;
   width: 40px;
   font-size: 24px;
   border: black 1px solid;
   color:black;
-  align-content: center;
 }
 
 @media(max-width: 500px) {
@@ -49,9 +50,9 @@ img {
   width: inherit;
 }
 
-.check{
+/* .check{
   background-color: rgb(231, 250, 124);
-}
+} */
 
 .displayTime {
   display: flex;
@@ -60,4 +61,33 @@ img {
   width: inherit;
   font-size: 40px;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.colorCode0{
+  background-color: rgb(231, 250, 124);
+}
+
+.colorCode1{
+  background-color: rgb(252, 199, 85);
+  color: green;
+}
+
+.colorCode2{
+  background-color: rgb(241, 138, 70);
+  color: rgb(202, 251, 68);
+}
+
+.colorCode3{
+  background-color: rgb(233, 38, 168);
+  color: rgb(127, 249, 180);
+}
+
+.colorCode4{
+  background-color: rgb(196, 9, 40);
+  color: rgb(244, 175, 194);
+}
+
+.colorCode5{
+  background-color: rgb(160, 18, 255);
+  color: rgb(212, 62, 231);
 }
