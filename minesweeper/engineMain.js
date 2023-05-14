@@ -72,6 +72,7 @@ setInterval(() => {
 
 function gameStarting(width, height, ammountsBomb) {
   //const field = document.querySelector('.field');
+  containerCells.style.setProperty('--columnAmmount', height);
   const cellsCount = width * height;
   cellCreating(cellsCount);
   const cells = document.querySelectorAll('.cell');

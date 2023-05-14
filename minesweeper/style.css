@@ -13,9 +13,15 @@ body{
 
 .field {
 display: grid;
-grid-template-columns: repeat(8, 40px);
+grid-template-columns: repeat(var(--columnAmmount), 40px);
 border: black 1px solid;
 }
+@media(max-width: 500px){
+  .field{
+    grid-template-columns: repeat(var(--columnAmmount), 30px);
+  }
+}
+
 
 .containerField{
   border: yellowgreen 2px solid;
@@ -30,14 +36,19 @@ p{
   color:black;
   align-content: center;
 }
+
+@media(max-width: 500px) {
+  p {
+    height: 30px;
+    width: 30px;
+  }
+}
+
 img {
   height: inherit;
   width: inherit;
 }
-/* .cell{
-  height: 40px;
-  border: black 2px solid;
-} */
+
 .check{
   background-color: rgb(231, 250, 124);
 }
@@ -49,5 +60,4 @@ img {
   width: inherit;
   font-size: 40px;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-
 }
