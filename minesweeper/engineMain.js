@@ -1,15 +1,22 @@
-const cellElement = document.createElement('div');
+const containerCells = document.createElement('div');
+const containerField = document.createElement('div');
 const bodyHTML = document.getElementById('body');
-cellElement.classList.add('field');
-bodyHTML.append(cellElement);
 let permisSpreadBomb = true;
 const bombs = [];
+const displayTime = document.createElement('div');
+displayTime.classList.add('displayTime');
+
+containerField.append(containerCells);
+containerField.append(displayTime);
+containerField.classList.add('containerField');
+containerCells.classList.add('field');
+bodyHTML.append(containerField);
 
 function cellCreating(cellCount) {
   for (let i = 0; cellCount > i; i += 1) {
     const cellUnit = document.createElement('p');
     cellUnit.classList.add('cell');
-    cellElement.append(cellUnit);
+    containerCells.append(cellUnit);
   }
 }
 
@@ -23,14 +30,52 @@ function bombRandoming(arr, bmbsCount, ammountPiles, indexFirstStep) {
   }
 }
 
+function timeDisplaying(hour, minute, second) {
+  if (minute < 10 && second < 10) {
+    displayTime.innerHTML = `${hour} :  0${minute} : 0${second}`;
+  } else if (minute < 10 && second > 10) {
+    displayTime.innerHTML = `${hour} :  0${minute} : ${second}`;
+  } else if (minute > 10 && second < 10) {
+    displayTime.innerHTML = `${hour} :  ${minute} : 0${second}`;
+  } else if (minute > 10 && second > 10) {
+    displayTime.innerHTML = `${hour} :  ${minute} : ${second}`;
+  }
+}
+timeDisplaying();
+
+class Time {
+  constructor() {
+    this.hours = 0;
+    this.minutes = 0;
+    this.seconds = 1;
+  }
+
+  timeCounting() {
+    this.seconds += 1;
+    if (this.seconds === 60) {
+      this.seconds = 1;
+      this.minutes += 1;
+    }
+    if (this.minutes === 60) {
+      this.minutes = 0;
+      this.hours += 1;
+    }
+    timeDisplaying(this.hours, this.minutes, this.seconds);
+  }
+}
+
+const time = new Time();
+
+setInterval(() => {
+  time.timeCounting();
+}, 1000);
+
 function gameStarting(width, height, ammountsBomb) {
   //const field = document.querySelector('.field');
   const cellsCount = width * height;
   cellCreating(cellsCount);
   const cells = document.querySelectorAll('.cell');
   const arrCells = [...cells];
-
- // bombRandoming(bombs, ammountsBomb, cellsCount);
 
   function bombChecking(row, column) {
     const index = row * width + column;

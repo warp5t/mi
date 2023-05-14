@@ -17,6 +17,10 @@ grid-template-columns: repeat(8, 40px);
 border: black 1px solid;
 }
 
+.containerField{
+  border: yellowgreen 2px solid;
+}
+
 p{
   position: relative;
   height: 40px;
@@ -36,4 +40,14 @@ img {
 } */
 .check{
   background-color: rgb(231, 250, 124);
+}
+
+.displayTime {
+  display: flex;
+  justify-content: center;
+  border: rgb(55, 120, 240) 1px solid;
+  width: inherit;
+  font-size: 40px;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
 }
