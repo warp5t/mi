@@ -51,10 +51,6 @@ img {
   width: inherit;
 }
 
-/* .check{
-  background-color: rgb(231, 250, 124);
-} */
-
 .displayTime {
   display: flex;
   justify-content: center;
@@ -90,5 +86,20 @@ img {
 
 .colorCode5{
   background-color: rgb(160, 18, 255);
-  color: rgb(212, 62, 231);
+  color: rgb(71, 238, 168);
+}
+
+.colorCode6{
+  background-color: rgb(18, 22, 255);
+  color: rgb(62, 231, 88);
+}
+
+.colorCode7{
+  background-color: rgb(7, 203, 252);
+  color: rgb(20, 9, 98);
+}
+
+.colorCode8{
+  background-color: rgb(7, 252, 68);
+  color: rgb(243, 54, 21);
 }

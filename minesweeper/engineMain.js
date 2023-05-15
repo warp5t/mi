@@ -73,7 +73,6 @@ setInterval(() => {
 }, 1000);
 
 function gameStarting(width, height, ammountsBomb) {
-  //const field = document.querySelector('.field');
   containerCells.style.setProperty('--columnAmmount', height);
   const cellsCount = width * height;
   cellCreating(cellsCount);
@@ -125,6 +124,15 @@ function gameStarting(width, height, ammountsBomb) {
     } else if (count === 5) {
       cells[index].classList.add('colorCode5');
       cells[index].textContent = count;
+    } else if (count === 6) {
+      cells[index].classList.add('colorCode6');
+      cells[index].textContent = count;
+    } else if (count === 7) {
+      cells[index].classList.add('colorCode7');
+      cells[index].textContent = count;
+    } else if (count === 8) {
+      cells[index].classList.add('colorCode8');
+      cells[index].textContent = count;
     } else {
       cells[index].textContent = count;
     }
@@ -164,6 +172,7 @@ function gameStarting(width, height, ammountsBomb) {
         const bonusSound = new Audio('bonus.wav');
         bonusSound.play();
         permisBonusSound = false;
+        permisStepSound = false;
       }
     }
 
@@ -182,7 +191,6 @@ function gameStarting(width, height, ammountsBomb) {
         bombRandoming(bombs, ammountsBomb, cellsCount, index);
         permisSpreadBomb = false;
       }
-      // cells[index].classList.add('check');
       const column = index % width;
       const row = (index - column) / width;
       cellOpening(row, column);
