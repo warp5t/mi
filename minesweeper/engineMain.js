@@ -4,7 +4,8 @@ const bodyHTML = document.getElementById('body');
 let permisSpreadBomb = true;
 const bombs = [];
 const displayTime = document.createElement('div');
-let codeColor;
+let permisBonusSound = true;
+let permisStepSound = true;
 displayTime.classList.add('displayTime');
 
 containerField.append(containerCells);
@@ -79,13 +80,21 @@ function gameStarting(width, height, ammountsBomb) {
   const cells = document.querySelectorAll('.cell');
   const arrCells = [...cells];
 
+  function verificating(row, column) {
+    return row >= 0
+         && row < height
+         && column >= 0
+         && column < width;
+  }
+
   function bombChecking(row, column) {
+    if (!verificating(row, column)) return 0;
     const index = row * width + column;
 
     return bombs.includes(index);
   }
 
-  function probabilitySearching(row, column) {
+  function probabilityNumber(row, column) {
     let count = 0;
     for (let x = -1; x <= 1; x += 1) {
       for (let y = -1; y <= 1; y += 1) {
@@ -122,24 +131,47 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   function cellOpening(row, column) {
+    if (!verificating(row, column)) return;
     const index = row * width + column;
     const cell = cells[index];
 
-    const count = probabilitySearching(row, column);
+    if (cell.disabled === true) return;
+    cell.disabled = true;
+
     if (bombChecking(row, column)) {
       const imageBomb = document.createElement('img');
       imageBomb.src = 'bomb.png';
       cell.appendChild(imageBomb);
       const explSound = new Audio('explosion.wav');
       explSound.play();
-    } else {
-      const clickSound = new Audio('notification.wav');
-      clickSound.play();
+      return;
+    }
+    const count = probabilityNumber(row, column);
+
+    cellColoring(count, index);
+    if (count !== 0) {
+      cell.textContent = count;
       cellColoring(count, index);
-      // if (count !== 0) {
-      //   cells[index].textContent = count;
-      //   cells[index].classList.add('colorCode0');
-      // }
+      if (permisStepSound === true) {
+        const clickSound = new Audio('notification.wav');
+        clickSound.play();
+        permisStepSound = false;
+      }
+      return;
+    }
+    if (count === 0) {
+      if (permisBonusSound === true) {
+        const bonusSound = new Audio('bonus.wav');
+        bonusSound.play();
+        permisBonusSound = false;
+      }
+    }
+
+    cells[index].classList.add('colorCode0');
+    for (let x = -1; x <= 1; x += 1) {
+      for (let y = -1; y <= 1; y += 1) {
+        cellOpening(row + y, column + x);
+      }
     }
   }
 
@@ -150,12 +182,14 @@ function gameStarting(width, height, ammountsBomb) {
         bombRandoming(bombs, ammountsBomb, cellsCount, index);
         permisSpreadBomb = false;
       }
-     // cells[index].classList.add('check');
+      // cells[index].classList.add('check');
       const column = index % width;
       const row = (index - column) / width;
       cellOpening(row, column);
+      permisBonusSound = true;
+      permisStepSound = true;
     }
   });
 }
 
-gameStarting(8, 8, 15);
+gameStarting(10, 10, 10);

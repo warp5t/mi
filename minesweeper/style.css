@@ -30,6 +30,7 @@ border: black 1px solid;
 p{
   display: flex;
   justify-content: center;
+  align-items:center;
   position: relative;
   height: 40px;
   width: 40px;
@@ -64,7 +65,7 @@ img {
 }
 
 .colorCode0{
-  background-color: rgb(231, 250, 124);
+  background-color: rgb(215, 216, 211);
 }
 
 .colorCode1{
