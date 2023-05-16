@@ -168,3 +168,26 @@ img {
 .activFlagMode{
   background-color:rgb(177, 109, 241)
 }
+
+.optionMode {
+  display: flex;
+  width: 100%;
+  font-size: 30px;
+  color: rgb(73, 92, 128);
+}
+
+.buttonRestart {
+  background-color:rgb(226, 247, 152);
+  border: yellowgreen 2px solid;
+  width: 100%;
+  font-size: 30px;
+  color: rgb(73, 92, 128);
+}
+
+.buttonDifficult{
+  background-color:rgb(226, 247, 152);
+  border: yellowgreen 2px solid;
+  width: 100%;
+  font-size: 30px;
+  color: rgb(73, 92, 128);
+}

@@ -8,6 +8,17 @@ function gameStarting(width, height, ammountsBomb) {
   buttonFlag.classList.add('buttonFlag');
   buttonFlag.innerText = 'Push for mode flag';
 
+  const buttonRestart = document.createElement('button');
+  buttonRestart.classList.add('buttonRestart');
+  buttonRestart.innerText = 'Restart';
+  const buttonDifficult = document.createElement('button');
+  buttonDifficult.classList.add('buttonDifficult');
+  buttonDifficult.innerText = 'Difficult';
+  const optionMode = document.createElement('div');
+  optionMode.classList.add('optionMode');
+  optionMode.prepend(buttonRestart);
+  optionMode.prepend(buttonDifficult);
+
   let permisSpreadBomb = true;
   const bombs = [];
   const displayTime = document.createElement('div');
@@ -18,6 +29,7 @@ function gameStarting(width, height, ammountsBomb) {
   displayTime.classList.add('displayTime');
 
   containerField.prepend(containerCells);
+  containerField.prepend(optionMode);
   containerField.prepend(buttonFlag);
   containerField.prepend(displayTime);
   containerField.classList.add('containerField');
@@ -32,6 +44,13 @@ function gameStarting(width, height, ammountsBomb) {
     }
   }
 
+  buttonRestart.addEventListener('click', () => {
+    bodyHTML.innerHTML = '';
+    gameStarting(10, 10, 10);
+    const restartSound = new Audio('sounds/restart.mp3');
+    restartSound.play();
+  });
+
   function windowWinnig() {
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
@@ -44,7 +63,7 @@ function gameStarting(width, height, ammountsBomb) {
 
     buttonWinner.addEventListener('click', () => {
       bodyHTML.innerHTML = '';
-      const bleepSound = new Audio('bleep-sound.mp3');
+      const bleepSound = new Audio('sounds/bleep-sound.mp3');
       bleepSound.play();
       gameStarting(10, 10, 10);
     });
@@ -52,6 +71,8 @@ function gameStarting(width, height, ammountsBomb) {
 
   function flagBtnRecoloring() {
     buttonFlag.classList.toggle('activFlagMode');
+    const soundModeFlag = new Audio('sounds/modeFlag.mp3');
+    soundModeFlag.play();
   }
 
   buttonFlag.addEventListener('click', () => {
@@ -62,7 +83,7 @@ function gameStarting(width, height, ammountsBomb) {
 
   function openCellChecking(countCellOpen) {
     if (countCellOpen === 1) {
-      const winnerSound = new Audio('win.mp3');
+      const winnerSound = new Audio('sounds/win.mp3');
       winnerSound.play();
       windowWinnig();
     }
@@ -191,7 +212,7 @@ function gameStarting(width, height, ammountsBomb) {
       const imageBomb = document.createElement('img');
       imageBomb.src = 'bomb.png';
       cell.appendChild(imageBomb);
-      const explSound = new Audio('explosion.wav');
+      const explSound = new Audio('sounds/explosion.wav');
       explSound.play();
       loose = true;
       return;
@@ -205,7 +226,7 @@ function gameStarting(width, height, ammountsBomb) {
       cell.textContent = count;
       cellColoring(count, index);
       if (permisStepSound === true) {
-        const clickSound = new Audio('notification.wav');
+        const clickSound = new Audio('sounds/notification.wav');
         clickSound.play();
         permisStepSound = false;
       }
@@ -213,7 +234,7 @@ function gameStarting(width, height, ammountsBomb) {
     }
     if (count === 0) {
       if (permisBonusSound === true) {
-        const bonusSound = new Audio('bonus.wav');
+        const bonusSound = new Audio('sounds/bonus.wav');
         bonusSound.play();
         permisBonusSound = false;
         permisStepSound = false;
@@ -242,6 +263,8 @@ function gameStarting(width, height, ammountsBomb) {
         const imageFlag = document.createElement('img');
         imageFlag.src = 'flag.png';
         arrCells[index].appendChild(imageFlag);
+        const flagSound = new Audio('sounds/flag.mp3');
+        flagSound.play();
       } else if (flagMode === false) {
         cellOpening(row, column);
       }
@@ -263,7 +286,7 @@ function gameStarting(width, height, ammountsBomb) {
       windowBox.append(buttonRepeat);
       buttonRepeat.addEventListener('click', () => {
         bodyHTML.innerHTML = '';
-        const bleepSound = new Audio('bleep-sound.mp3');
+        const bleepSound = new Audio('sounds/bleep-sound.mp3');
         bleepSound.play();
         gameStarting(10, 10, 10);
       });
