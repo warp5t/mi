@@ -4,15 +4,21 @@ function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
   const containerField = document.createElement('div');
   const bodyHTML = document.getElementById('body');
+  const buttonFlag = document.createElement('button');
+  buttonFlag.classList.add('buttonFlag');
+  buttonFlag.innerText = 'Push for mode flag';
+
   let permisSpreadBomb = true;
   const bombs = [];
   const displayTime = document.createElement('div');
   let permisBonusSound = true;
   let permisStepSound = true;
   let coutClick = 0;
+  let flagMode = false;
   displayTime.classList.add('displayTime');
 
   containerField.prepend(containerCells);
+  containerField.prepend(buttonFlag);
   containerField.prepend(displayTime);
   containerField.classList.add('containerField');
   containerCells.classList.add('field');
@@ -44,12 +50,21 @@ function gameStarting(width, height, ammountsBomb) {
     });
   }
 
+  function flagBtnRecoloring() {
+    buttonFlag.classList.toggle('activFlagMode');
+  }
+
+  buttonFlag.addEventListener('click', () => {
+    flagBtnRecoloring();
+    if (flagMode === true) flagMode = false;
+    else if (flagMode === false) flagMode = true;
+  });
+
   function openCellChecking(countCellOpen) {
     if (countCellOpen === 1) {
       const winnerSound = new Audio('win.mp3');
       winnerSound.play();
       windowWinnig();
-      console.log('WINNER');
     }
   }
 
@@ -182,7 +197,6 @@ function gameStarting(width, height, ammountsBomb) {
       return;
     }
     const count = probabilityNumber(row, column);
-    console.log(countCellOpen, '===================== count');
     openCellChecking(countCellOpen);
     countCellOpen -= 1;
 
@@ -205,8 +219,8 @@ function gameStarting(width, height, ammountsBomb) {
         permisStepSound = false;
       }
     }
-    // coutCellOpen -= 1;
-    cells[index].classList.add('colorCode0');
+
+    cell.classList.add('colorCode0');
     for (let x = -1; x <= 1; x += 1) {
       for (let y = -1; y <= 1; y += 1) {
         cellOpening(row + y, column + x);
@@ -224,7 +238,13 @@ function gameStarting(width, height, ammountsBomb) {
       }
       const column = index % width;
       const row = (index - column) / width;
-      cellOpening(row, column);
+      if (flagMode === true) {
+        const imageFlag = document.createElement('img');
+        imageFlag.src = 'flag.png';
+        arrCells[index].appendChild(imageFlag);
+      } else if (flagMode === false) {
+        cellOpening(row, column);
+      }
       permisBonusSound = true;
       permisStepSound = true;
     }

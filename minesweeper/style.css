@@ -14,7 +14,7 @@ body{
 .field {
 display: grid;
 grid-template-columns: repeat(var(--columnAmmount), 40px);
-border: black 1px solid;
+border: rgb(160, 172, 0) 1px solid;
 }
 @media(max-width: 500px){
   .field{
@@ -36,8 +36,9 @@ p{
   height: 40px;
   width: 40px;
   font-size: 24px;
-  border: black 1px solid;
+  border: rgb(4, 168, 72) 1px solid;
   color:black;
+  background-color:rgb(252, 252, 218)
 }
 
 @media(max-width: 500px) {
@@ -59,6 +60,8 @@ img {
   width: inherit;
   font-size: 40px;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: rgb(222, 238, 1);
+  color: rgba(94, 146, 224, 0.986);
 }
 
 .colorCode0{
@@ -151,4 +154,17 @@ img {
   font-size: 30px;
   margin: 30px 0 0 0;
   border: 4px rgb(211, 85, 106) solid;
+}
+
+.buttonFlag {
+  background-color:rgb(226, 247, 152);
+  border: yellowgreen 2px solid;
+  width: 100%;
+  font-size: 30px;
+  padding: 0 0 3px 0;
+  color: rgb(73, 92, 128);
+}
+
+.activFlagMode{
+  background-color:rgb(177, 109, 241)
 }
