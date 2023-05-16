@@ -1,65 +1,5 @@
 let loose = false;
 
-// containerField.append(containerCells);
-// containerField.append(displayTime);
-// containerField.classList.add('containerField');
-// containerCells.classList.add('field');
-// bodyHTML.append(containerField);
-
-// function cellCreating(cellCount) {
-//   for (let i = 0; cellCount > i; i += 1) {
-//     const cellUnit = document.createElement('p');
-//     cellUnit.classList.add('cell');
-//     containerCells.append(cellUnit);
-//   }
-// }
-
-// function bombRandoming(arr, bmbsCount, ammountPiles, indexFirstStep) {
-//   console.log(indexFirstStep, ' - indexFirstStep');
-//   while (arr.length < bmbsCount) {
-//     const randomNumber = Math.floor(Math.random() * ammountPiles) + 1;
-//     if (!arr.includes(randomNumber) && randomNumber !== indexFirstStep) {
-//       arr.push(randomNumber);
-//     }
-//   }
-// }
-
-// function timeDisplaying(hour, minute, second) {
-//   if (minute < 10 && second < 10) {
-//     displayTime.innerHTML = `${hour} :  0${minute} : 0${second}`;
-//   } else if (minute < 10 && second > 10) {
-//     displayTime.innerHTML = `${hour} :  0${minute} : ${second}`;
-//   } else if (minute > 10 && second < 10) {
-//     displayTime.innerHTML = `${hour} :  ${minute} : 0${second}`;
-//   } else if (minute > 10 && second > 10) {
-//     displayTime.innerHTML = `${hour} :  ${minute} : ${second}`;
-//   }
-// }
-// timeDisplaying();
-
-// class Time {
-//   constructor() {
-//     this.hours = 0;
-//     this.minutes = 0;
-//     this.seconds = 1;
-//   }
-
-//   timeCounting() {
-//     this.seconds += 1;
-//     if (this.seconds === 60) {
-//       this.seconds = 1;
-//       this.minutes += 1;
-//     }
-//     if (this.minutes === 60) {
-//       this.minutes = 0;
-//       this.hours += 1;
-//     }
-//     timeDisplaying(this.hours, this.minutes, this.seconds);
-//   }
-// }
-
-// const time = new Time();
-
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
   const containerField = document.createElement('div');
@@ -260,19 +200,18 @@ function gameStarting(width, height, ammountsBomb) {
 
   function windowOvering() {
     if (loose === true) {
-      console.log('check 263');
+      console.log('check 263', containerField, ' - container field');
       const windowBox = document.createElement('div');
       windowBox.classList.add('windowOver');
-      containerField.prepend(windowBox);
       windowBox.textContent = 'Game over. Try again';
+      containerField.prepend(windowBox);
 
       const buttonRepeat = document.createElement('button');
       buttonRepeat.classList.add('buttonRepeat');
       buttonRepeat.textContent = 'OK';
       windowBox.append(buttonRepeat);
       buttonRepeat.addEventListener('click', () => {
-        containerField.remove();
-        windowBox.remove();
+        bodyHTML.innerHTML = '';
         arrCells.length = 0;
         bombs.length = 0;
         gameStarting(10, 10, 10);
@@ -290,30 +229,3 @@ function gameStarting(width, height, ammountsBomb) {
 }
 
 gameStarting(10, 10, 10);
-
-// function windowOvering() {
-//   if (loose === true) {
-//     const windowBox = document.createElement('div');
-//     windowBox.classList.add('windowOver');
-//     containerField.prepend(windowBox);
-//     windowBox.textContent = 'Game over. Try again';
-
-//     const buttonRepeat = document.createElement('button');
-//     buttonRepeat.classList.add('buttonRepeat');
-//     buttonRepeat.textContent = 'OK';
-//     windowBox.append(buttonRepeat);
-//     buttonRepeat.addEventListener('click', () => {
-//       windowBox.style.display = 'none';
-//       gameStarting(10, 10, 10);
-//     });
-//   }
-// }
-
-// setInterval(() => {
-//   time.timeCounting();
-//   if (loose === true) {
-//     windowOvering();
-//     containerField.remove();
-//     loose = false;
-//   }
-// }, 1000);
