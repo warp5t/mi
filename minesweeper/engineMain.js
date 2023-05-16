@@ -9,6 +9,7 @@ function gameStarting(width, height, ammountsBomb) {
   const displayTime = document.createElement('div');
   let permisBonusSound = true;
   let permisStepSound = true;
+  let coutClick = 0;
   displayTime.classList.add('displayTime');
 
   containerField.prepend(containerCells);
@@ -22,6 +23,33 @@ function gameStarting(width, height, ammountsBomb) {
       const cellUnit = document.createElement('p');
       cellUnit.classList.add('cell');
       containerCells.append(cellUnit);
+    }
+  }
+
+  function windowWinnig() {
+    const windowWinner = document.createElement('div');
+    windowWinner.classList.add('windowWinner');
+    windowWinner.innerText = `Hooray! You found all mines in ${displayTime.textContent} and ${coutClick} moves!`;
+    const buttonWinner = document.createElement('button');
+    buttonWinner.classList.add('buttonWinner');
+    buttonWinner.innerText = 'OK';
+    windowWinner.append(buttonWinner);
+    bodyHTML.appendChild(windowWinner);
+
+    buttonWinner.addEventListener('click', () => {
+      bodyHTML.innerHTML = '';
+      const bleepSound = new Audio('bleep-sound.mp3');
+      bleepSound.play();
+      gameStarting(10, 10, 10);
+    });
+  }
+
+  function openCellChecking(countCellOpen) {
+    if (countCellOpen === 1) {
+      const winnerSound = new Audio('win.mp3');
+      winnerSound.play();
+      windowWinnig();
+      console.log('WINNER');
     }
   }
 
@@ -73,6 +101,7 @@ function gameStarting(width, height, ammountsBomb) {
   containerCells.style.setProperty('--columnAmmount', height);
   const cellsCount = width * height;
   cellCreating(cellsCount);
+  let countCellOpen = cellsCount - ammountsBomb;
   const cells = document.querySelectorAll('.cell');
   const arrCells = [...cells];
 
@@ -150,10 +179,12 @@ function gameStarting(width, height, ammountsBomb) {
       const explSound = new Audio('explosion.wav');
       explSound.play();
       loose = true;
-      console.log('loose : ', loose);
       return;
     }
     const count = probabilityNumber(row, column);
+    console.log(countCellOpen, '===================== count');
+    openCellChecking(countCellOpen);
+    countCellOpen -= 1;
 
     cellColoring(count, index);
     if (count !== 0) {
@@ -174,7 +205,7 @@ function gameStarting(width, height, ammountsBomb) {
         permisStepSound = false;
       }
     }
-
+    // coutCellOpen -= 1;
     cells[index].classList.add('colorCode0');
     for (let x = -1; x <= 1; x += 1) {
       for (let y = -1; y <= 1; y += 1) {
@@ -185,6 +216,7 @@ function gameStarting(width, height, ammountsBomb) {
 
   bodyHTML.addEventListener('click', (event) => {
     if (event.target.tagName === 'P') {
+      coutClick += 1;
       const index = arrCells.indexOf(event.target);
       if (permisSpreadBomb === true) {
         bombRandoming(bombs, ammountsBomb, cellsCount, index);
@@ -198,13 +230,12 @@ function gameStarting(width, height, ammountsBomb) {
     }
   });
 
-  function windowOvering() {
+  function windowLoosing() {
     if (loose === true) {
-      console.log('check 263', containerField, ' - container field');
       const windowBox = document.createElement('div');
       windowBox.classList.add('windowOver');
+      bodyHTML.appendChild(windowBox);
       windowBox.textContent = 'Game over. Try again';
-      containerField.prepend(windowBox);
 
       const buttonRepeat = document.createElement('button');
       buttonRepeat.classList.add('buttonRepeat');
@@ -212,8 +243,8 @@ function gameStarting(width, height, ammountsBomb) {
       windowBox.append(buttonRepeat);
       buttonRepeat.addEventListener('click', () => {
         bodyHTML.innerHTML = '';
-        arrCells.length = 0;
-        bombs.length = 0;
+        const bleepSound = new Audio('bleep-sound.mp3');
+        bleepSound.play();
         gameStarting(10, 10, 10);
       });
     }
@@ -222,10 +253,10 @@ function gameStarting(width, height, ammountsBomb) {
   setInterval(() => {
     time.timeCounting();
     if (loose === true) {
-      windowOvering();
+      windowLoosing();
       loose = false;
     }
   }, 1000);
 }
 
-gameStarting(10, 10, 10);
+gameStarting(10, 10, 3);
