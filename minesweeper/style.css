@@ -24,6 +24,7 @@ border: black 1px solid;
 
 
 .containerField{
+  position: relative;
   border: yellowgreen 2px solid;
 }
 
@@ -102,4 +103,28 @@ img {
 .colorCode8{
   background-color: rgb(7, 252, 68);
   color: rgb(243, 54, 21);
+}
+
+.windowOver{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  top:0;
+  width: 100%;
+  height: 100%;
+  background-color: aqua;
+  z-index: 2;
+  font-size: 25px;
+}
+
+.buttonRepeat {
+  width: 80px;
+  height: 40px;
+  background-color:darkgoldenrod;
+  text-align: center;
+  font-size: 30px;
+  margin: 30px 0 0 0;
+  border: 4px rgb(196, 9, 40) solid;
 }

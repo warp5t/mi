@@ -1,78 +1,135 @@
-const containerCells = document.createElement('div');
-const containerField = document.createElement('div');
-const bodyHTML = document.getElementById('body');
-let permisSpreadBomb = true;
-const bombs = [];
-const displayTime = document.createElement('div');
-let permisBonusSound = true;
-let permisStepSound = true;
-displayTime.classList.add('displayTime');
+let loose = false;
 
-containerField.append(containerCells);
-containerField.append(displayTime);
-containerField.classList.add('containerField');
-containerCells.classList.add('field');
-bodyHTML.append(containerField);
+// containerField.append(containerCells);
+// containerField.append(displayTime);
+// containerField.classList.add('containerField');
+// containerCells.classList.add('field');
+// bodyHTML.append(containerField);
 
-function cellCreating(cellCount) {
-  for (let i = 0; cellCount > i; i += 1) {
-    const cellUnit = document.createElement('p');
-    cellUnit.classList.add('cell');
-    containerCells.append(cellUnit);
-  }
-}
+// function cellCreating(cellCount) {
+//   for (let i = 0; cellCount > i; i += 1) {
+//     const cellUnit = document.createElement('p');
+//     cellUnit.classList.add('cell');
+//     containerCells.append(cellUnit);
+//   }
+// }
 
-function bombRandoming(arr, bmbsCount, ammountPiles, indexFirstStep) {
-  console.log(indexFirstStep, ' - indexFirstStep');
-  while (arr.length < bmbsCount) {
-    const randomNumber = Math.floor(Math.random() * ammountPiles) + 1;
-    if (!arr.includes(randomNumber) && randomNumber !== indexFirstStep) {
-      arr.push(randomNumber);
-    }
-  }
-}
+// function bombRandoming(arr, bmbsCount, ammountPiles, indexFirstStep) {
+//   console.log(indexFirstStep, ' - indexFirstStep');
+//   while (arr.length < bmbsCount) {
+//     const randomNumber = Math.floor(Math.random() * ammountPiles) + 1;
+//     if (!arr.includes(randomNumber) && randomNumber !== indexFirstStep) {
+//       arr.push(randomNumber);
+//     }
+//   }
+// }
 
-function timeDisplaying(hour, minute, second) {
-  if (minute < 10 && second < 10) {
-    displayTime.innerHTML = `${hour} :  0${minute} : 0${second}`;
-  } else if (minute < 10 && second > 10) {
-    displayTime.innerHTML = `${hour} :  0${minute} : ${second}`;
-  } else if (minute > 10 && second < 10) {
-    displayTime.innerHTML = `${hour} :  ${minute} : 0${second}`;
-  } else if (minute > 10 && second > 10) {
-    displayTime.innerHTML = `${hour} :  ${minute} : ${second}`;
-  }
-}
-timeDisplaying();
+// function timeDisplaying(hour, minute, second) {
+//   if (minute < 10 && second < 10) {
+//     displayTime.innerHTML = `${hour} :  0${minute} : 0${second}`;
+//   } else if (minute < 10 && second > 10) {
+//     displayTime.innerHTML = `${hour} :  0${minute} : ${second}`;
+//   } else if (minute > 10 && second < 10) {
+//     displayTime.innerHTML = `${hour} :  ${minute} : 0${second}`;
+//   } else if (minute > 10 && second > 10) {
+//     displayTime.innerHTML = `${hour} :  ${minute} : ${second}`;
+//   }
+// }
+// timeDisplaying();
 
-class Time {
-  constructor() {
-    this.hours = 0;
-    this.minutes = 0;
-    this.seconds = 1;
-  }
+// class Time {
+//   constructor() {
+//     this.hours = 0;
+//     this.minutes = 0;
+//     this.seconds = 1;
+//   }
 
-  timeCounting() {
-    this.seconds += 1;
-    if (this.seconds === 60) {
-      this.seconds = 1;
-      this.minutes += 1;
-    }
-    if (this.minutes === 60) {
-      this.minutes = 0;
-      this.hours += 1;
-    }
-    timeDisplaying(this.hours, this.minutes, this.seconds);
-  }
-}
+//   timeCounting() {
+//     this.seconds += 1;
+//     if (this.seconds === 60) {
+//       this.seconds = 1;
+//       this.minutes += 1;
+//     }
+//     if (this.minutes === 60) {
+//       this.minutes = 0;
+//       this.hours += 1;
+//     }
+//     timeDisplaying(this.hours, this.minutes, this.seconds);
+//   }
+// }
 
-const time = new Time();
-
-setInterval(() => {
-  time.timeCounting();
-}, 1000);
+// const time = new Time();
 
 function gameStarting(width, height, ammountsBomb) {
+  const containerCells = document.createElement('div');
+  const containerField = document.createElement('div');
+  const bodyHTML = document.getElementById('body');
+  let permisSpreadBomb = true;
+  const bombs = [];
+  const displayTime = document.createElement('div');
+  let permisBonusSound = true;
+  let permisStepSound = true;
+  displayTime.classList.add('displayTime');
+
+  containerField.prepend(containerCells);
+  containerField.prepend(displayTime);
+  containerField.classList.add('containerField');
+  containerCells.classList.add('field');
+  bodyHTML.prepend(containerField);
+
+  function cellCreating(cellCount) {
+    for (let i = 0; cellCount > i; i += 1) {
+      const cellUnit = document.createElement('p');
+      cellUnit.classList.add('cell');
+      containerCells.append(cellUnit);
+    }
+  }
+
+  function bombRandoming(arr, bmbsCount, ammountPiles, indexFirstStep) {
+    while (arr.length < bmbsCount) {
+      const randomNumber = Math.floor(Math.random() * ammountPiles) + 1;
+      if (!arr.includes(randomNumber) && randomNumber !== indexFirstStep) {
+        arr.push(randomNumber);
+      }
+    }
+  }
+
+  function timeDisplaying(hour, minute, second) {
+    if (minute < 10 && second < 10) {
+      displayTime.innerHTML = `${hour} :  0${minute} : 0${second}`;
+    } else if (minute < 10 && second > 10) {
+      displayTime.innerHTML = `${hour} :  0${minute} : ${second}`;
+    } else if (minute > 10 && second < 10) {
+      displayTime.innerHTML = `${hour} :  ${minute} : 0${second}`;
+    } else if (minute > 10 && second > 10) {
+      displayTime.innerHTML = `${hour} :  ${minute} : ${second}`;
+    }
+  }
+  timeDisplaying();
+
+  class Time {
+    constructor() {
+      this.hours = 0;
+      this.minutes = 0;
+      this.seconds = 1;
+    }
+
+    timeCounting() {
+      this.seconds += 1;
+      if (this.seconds === 60) {
+        this.seconds = 1;
+        this.minutes += 1;
+      }
+      if (this.minutes === 60) {
+        this.minutes = 0;
+        this.hours += 1;
+      }
+      timeDisplaying(this.hours, this.minutes, this.seconds);
+    }
+  }
+
+  const time = new Time();
+
   containerCells.style.setProperty('--columnAmmount', height);
   const cellsCount = width * height;
   cellCreating(cellsCount);
@@ -152,6 +209,8 @@ function gameStarting(width, height, ammountsBomb) {
       cell.appendChild(imageBomb);
       const explSound = new Audio('explosion.wav');
       explSound.play();
+      loose = true;
+      console.log('loose : ', loose);
       return;
     }
     const count = probabilityNumber(row, column);
@@ -198,6 +257,63 @@ function gameStarting(width, height, ammountsBomb) {
       permisStepSound = true;
     }
   });
+
+  function windowOvering() {
+    if (loose === true) {
+      console.log('check 263');
+      const windowBox = document.createElement('div');
+      windowBox.classList.add('windowOver');
+      containerField.prepend(windowBox);
+      windowBox.textContent = 'Game over. Try again';
+
+      const buttonRepeat = document.createElement('button');
+      buttonRepeat.classList.add('buttonRepeat');
+      buttonRepeat.textContent = 'OK';
+      windowBox.append(buttonRepeat);
+      buttonRepeat.addEventListener('click', () => {
+        containerField.remove();
+        windowBox.remove();
+        arrCells.length = 0;
+        bombs.length = 0;
+        gameStarting(10, 10, 10);
+      });
+    }
+  }
+
+  setInterval(() => {
+    time.timeCounting();
+    if (loose === true) {
+      windowOvering();
+      loose = false;
+    }
+  }, 1000);
 }
 
 gameStarting(10, 10, 10);
+
+// function windowOvering() {
+//   if (loose === true) {
+//     const windowBox = document.createElement('div');
+//     windowBox.classList.add('windowOver');
+//     containerField.prepend(windowBox);
+//     windowBox.textContent = 'Game over. Try again';
+
+//     const buttonRepeat = document.createElement('button');
+//     buttonRepeat.classList.add('buttonRepeat');
+//     buttonRepeat.textContent = 'OK';
+//     windowBox.append(buttonRepeat);
+//     buttonRepeat.addEventListener('click', () => {
+//       windowBox.style.display = 'none';
+//       gameStarting(10, 10, 10);
+//     });
+//   }
+// }
+
+// setInterval(() => {
+//   time.timeCounting();
+//   if (loose === true) {
+//     windowOvering();
+//     containerField.remove();
+//     loose = false;
+//   }
+// }, 1000);
