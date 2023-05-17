@@ -6,7 +6,7 @@ function gameStarting(width, height, ammountsBomb) {
   const bodyHTML = document.getElementById('body');
   const buttonFlag = document.createElement('button');
   buttonFlag.classList.add('buttonFlag');
-  buttonFlag.innerText = 'Push for mode flag';
+  buttonFlag.innerText = 'Mode flag';
 
   const buttonRestart = document.createElement('button');
   buttonRestart.classList.add('buttonRestart');
@@ -81,22 +81,38 @@ function gameStarting(width, height, ammountsBomb) {
     const windDifficult = document.createElement('div');
     windDifficult.classList.add('windDifficult');
     windDifficult.innerText = 'Chose your destiny';
+    const choiseAmmountMines = document.createElement('label');
+    choiseAmmountMines.classList.add('choiseAmmountMines');
+    choiseAmmountMines.innerText = 'Ammount mines';
+    choiseAmmountMines.htmlFor = 'ammount';
+    const selectAmmount = document.createElement('select');
+    selectAmmount.classList.add('selectAmmount');
+    selectAmmount.id = 'ammount';
+    selectAmmount.name = 'ammount';
+    for (let i = 10; i <= 99; i += 1) {
+      const optionTag = document.createElement('option');
+      optionTag.value = i;
+      optionTag.innerText = `${i}`;
+      selectAmmount.append(optionTag);
+    }
+    choiseAmmountMines.append(selectAmmount);
     const containerButttons = document.createElement('div');
     containerButttons.classList.add('containerButttons');
     const buttonEasy = document.createElement('button');
     buttonEasy.classList.add('buttonEasy');
-    buttonEasy.innerText = 'Easy';
+    buttonEasy.innerText = '10x10 cells';
     const buttonMedium = document.createElement('button');
     buttonMedium.classList.add('buttonMedium');
-    buttonMedium.innerText = 'Medium';
+    buttonMedium.innerText = '15x15 cells';
     const buttonHard = document.createElement('button');
     buttonHard.classList.add('buttonHard');
-    buttonHard.innerText = 'Hard';
+    buttonHard.innerText = '25x25 cells';
 
     containerButttons.append(buttonEasy);
     containerButttons.append(buttonMedium);
     containerButttons.append(buttonHard);
     windDifficult.append(containerButttons);
+    windDifficult.append(choiseAmmountMines);
     bodyHTML.prepend(windDifficult);
 
     const choseDifficultSound = new Audio('sounds/difficultChose.mp3');
@@ -104,17 +120,17 @@ function gameStarting(width, height, ammountsBomb) {
     buttonEasy.addEventListener('click', () => {
       choseDifficultSound.play();
       bodyHTML.innerHTML = '';
-      gameStarting(10, 10, 10);
+      gameStarting(10, 10, selectAmmount.value);
     });
     buttonMedium.addEventListener('click', () => {
       choseDifficultSound.play();
       bodyHTML.innerHTML = '';
-      gameStarting(12, 12, 18);
+      gameStarting(15, 15, selectAmmount.value);
     });
     buttonHard.addEventListener('click', () => {
       choseDifficultSound.play();
       bodyHTML.innerHTML = '';
-      gameStarting(14, 14, 31);
+      gameStarting(25, 25, selectAmmount.value);
     });
 
     const diffcultSound = new Audio('sounds/difficult.mp3');
