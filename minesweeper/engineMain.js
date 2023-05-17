@@ -21,17 +21,25 @@ function gameStarting(width, height, ammountsBomb) {
 
   let permisSpreadBomb = true;
   const bombs = [];
-  const displayTime = document.createElement('div');
+
+  const timeDisplay = document.createElement('div');
+  timeDisplay.classList.add('displayClickContainer');
+  const clickDisplay = document.createElement('div');
+  clickDisplay.classList.add('displayClickContainer');
+  clickDisplay.innerText = 'Clicks: 0';
+  const timeClickContainer = document.createElement('div');
   let permisBonusSound = true;
   let permisStepSound = true;
   let coutClick = 0;
   let flagMode = false;
-  displayTime.classList.add('displayTime');
+  timeClickContainer.classList.add('timeClickContainer');
+  timeClickContainer.append(clickDisplay);
+  timeClickContainer.append(timeDisplay);
 
   containerField.prepend(containerCells);
   containerField.prepend(optionMode);
   containerField.prepend(buttonFlag);
-  containerField.prepend(displayTime);
+  containerField.prepend(timeClickContainer);
   containerField.classList.add('containerField');
   containerCells.classList.add('field');
   bodyHTML.prepend(containerField);
@@ -54,7 +62,7 @@ function gameStarting(width, height, ammountsBomb) {
   function windowWinnig() {
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
-    windowWinner.innerText = `Hooray! You found all mines in ${displayTime.textContent} and ${coutClick} moves!`;
+    windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${coutClick} moves!`;
     const buttonWinner = document.createElement('button');
     buttonWinner.classList.add('buttonWinner');
     buttonWinner.innerText = 'OK';
@@ -144,13 +152,13 @@ function gameStarting(width, height, ammountsBomb) {
 
   function timeDisplaying(hour, minute, second) {
     if (minute < 10 && second < 10) {
-      displayTime.innerHTML = `${hour} :  0${minute} : 0${second}`;
+      timeDisplay.innerHTML = `${hour} :  0${minute} : 0${second}`;
     } else if (minute < 10 && second > 10) {
-      displayTime.innerHTML = `${hour} :  0${minute} : ${second}`;
+      timeDisplay.innerHTML = `${hour} :  0${minute} : ${second}`;
     } else if (minute > 10 && second < 10) {
-      displayTime.innerHTML = `${hour} :  ${minute} : 0${second}`;
+      timeDisplay.innerHTML = `${hour} :  ${minute} : 0${second}`;
     } else if (minute > 10 && second > 10) {
-      displayTime.innerHTML = `${hour} :  ${minute} : ${second}`;
+      timeDisplay.innerHTML = `${hour} :  ${minute} : ${second}`;
     }
   }
   timeDisplaying();
@@ -295,7 +303,6 @@ function gameStarting(width, height, ammountsBomb) {
 
   bodyHTML.addEventListener('click', (event) => {
     if (event.target.tagName === 'P') {
-      coutClick += 1;
       const index = arrCells.indexOf(event.target);
       if (permisSpreadBomb === true) {
         bombRandoming(bombs, ammountsBomb, cellsCount, index);
@@ -310,6 +317,8 @@ function gameStarting(width, height, ammountsBomb) {
         const flagSound = new Audio('sounds/flag.mp3');
         flagSound.play();
       } else if (flagMode === false) {
+        coutClick += 1;
+        clickDisplay.innerText = `Clicks: ${coutClick}`;
         cellOpening(row, column);
       }
       permisBonusSound = true;
