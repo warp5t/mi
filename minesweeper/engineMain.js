@@ -1,14 +1,25 @@
 let loose = false;
 let minesAmmount = 10;
 let difficult;
+const arrClicks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+arrClicks.length = 0;
+const arrTimes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+arrTimes.length = 0;
 
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
   const containerField = document.createElement('div');
   const bodyHTML = document.getElementById('body');
+  const scoreFlagMode = document.createElement('div');
+  scoreFlagMode.classList.add('scoreFlagMode');
+  const scoreButton = document.createElement('button');
+  scoreButton.innerText = 'Score';
+  scoreButton.classList.add('buttonFlag');
   const buttonFlag = document.createElement('button');
   buttonFlag.classList.add('buttonFlag');
   buttonFlag.innerText = 'Mode flag';
+  scoreFlagMode.append(scoreButton);
+  scoreFlagMode.append(buttonFlag);
 
   const buttonRestart = document.createElement('button');
   buttonRestart.classList.add('buttonRestart');
@@ -32,7 +43,7 @@ function gameStarting(width, height, ammountsBomb) {
   const timeClickContainer = document.createElement('div');
   let permisBonusSound = true;
   let permisStepSound = true;
-  let coutClick = 0;
+  let countClick = 0;
   let flagMode = false;
 
   timeClickContainer.classList.add('timeClickContainer');
@@ -41,7 +52,7 @@ function gameStarting(width, height, ammountsBomb) {
 
   containerField.prepend(containerCells);
   containerField.prepend(optionMode);
-  containerField.prepend(buttonFlag);
+  containerField.prepend(scoreFlagMode);
   containerField.prepend(timeClickContainer);
   containerField.classList.add('containerField');
   containerCells.classList.add('field');
@@ -73,7 +84,9 @@ function gameStarting(width, height, ammountsBomb) {
   function windowWinnig() {
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
-    windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${coutClick} moves!`;
+    windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${countClick} moves!`;
+    arrClicks.push(countClick);
+    arrTimes.push(timeDisplay.textContent);
     const buttonWinner = document.createElement('button');
     buttonWinner.classList.add('buttonWinner');
     buttonWinner.innerText = 'OK';
@@ -164,6 +177,29 @@ function gameStarting(width, height, ammountsBomb) {
     flagBtnRecoloring();
     if (flagMode === true) flagMode = false;
     else if (flagMode === false) flagMode = true;
+  });
+
+  scoreButton.addEventListener('click', () => {
+    const scoreSound = new Audio('sounds/score.mp3');
+    scoreSound.play();
+    const windowScore = document.createElement('div');
+    windowScore.classList.add('windowScore');
+    const buttonCloseScore = document.createElement('button');
+    buttonCloseScore.classList.add('buttonCloseScore');
+    buttonCloseScore.innerText = 'Close';
+    windowScore.append(buttonCloseScore);
+    for (let i = 0; i < arrClicks.length; i += 1) {
+      const lineScore = document.createElement('div');
+      lineScore.classList.add('lineScore');
+      windowScore.append(lineScore);
+      lineScore.innerText = `${i + 1}. ${arrClicks[i]} clicks for ${arrTimes[i]}`;
+    }
+    bodyHTML.append(windowScore);
+    buttonCloseScore.addEventListener('click', () => {
+      const closeScoreSound = new Audio('sounds/closeScore.mp3');
+      closeScoreSound.play();
+      windowScore.remove();
+    });
   });
 
   function openCellChecking(countCellOpen) {
@@ -350,8 +386,8 @@ function gameStarting(width, height, ammountsBomb) {
         const flagSound = new Audio('sounds/flag.mp3');
         flagSound.play();
       } else if (flagMode === false) {
-        coutClick += 1;
-        clickDisplay.innerText = `Clicks: ${coutClick}`;
+        countClick += 1;
+        clickDisplay.innerText = `Clicks: ${countClick}`;
         cellOpening(row, column);
       }
       permisBonusSound = true;

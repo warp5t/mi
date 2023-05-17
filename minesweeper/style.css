@@ -173,11 +173,11 @@ img {
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items:center;
   top:0;
   width: 100%;
   height: 100%;
+  padding: 200px 0 0 0;
   background-color: rgb(199, 252, 9);
   z-index: 2;
   font-size: 25px;
@@ -361,4 +361,33 @@ img {
 }
 .optionTag{
   
+}
+
+.scoreFlagMode {
+  display: flex;
+  flex-direction: row;
+}
+
+.windowScore {
+  position: absolute;
+  top:0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color:yellowgreen;
+}
+
+.buttonCloseScore {
+  width:20%;
+  height: 55px;
+  font-size: 30px;
+  background-color:darkblue;
+  border: 2px rgb(239, 71, 245) solid;
+  color: aliceblue;
+}
+
+.lineScore {
+  padding: 10px;
 }
