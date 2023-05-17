@@ -69,6 +69,50 @@ function gameStarting(width, height, ammountsBomb) {
     });
   }
 
+  buttonDifficult.addEventListener('click', () => {
+    const windDifficult = document.createElement('div');
+    windDifficult.classList.add('windDifficult');
+    windDifficult.innerText = 'Chose your destiny';
+    const containerButttons = document.createElement('div');
+    containerButttons.classList.add('containerButttons');
+    const buttonEasy = document.createElement('button');
+    buttonEasy.classList.add('buttonEasy');
+    buttonEasy.innerText = 'Easy';
+    const buttonMedium = document.createElement('button');
+    buttonMedium.classList.add('buttonMedium');
+    buttonMedium.innerText = 'Medium';
+    const buttonHard = document.createElement('button');
+    buttonHard.classList.add('buttonHard');
+    buttonHard.innerText = 'Hard';
+
+    containerButttons.append(buttonEasy);
+    containerButttons.append(buttonMedium);
+    containerButttons.append(buttonHard);
+    windDifficult.append(containerButttons);
+    bodyHTML.prepend(windDifficult);
+
+    const choseDifficultSound = new Audio('sounds/difficultChose.mp3');
+
+    buttonEasy.addEventListener('click', () => {
+      choseDifficultSound.play();
+      bodyHTML.innerHTML = '';
+      gameStarting(10, 10, 10);
+    });
+    buttonMedium.addEventListener('click', () => {
+      choseDifficultSound.play();
+      bodyHTML.innerHTML = '';
+      gameStarting(12, 12, 18);
+    });
+    buttonHard.addEventListener('click', () => {
+      choseDifficultSound.play();
+      bodyHTML.innerHTML = '';
+      gameStarting(14, 14, 31);
+    });
+
+    const diffcultSound = new Audio('sounds/difficult.mp3');
+    diffcultSound.play();
+  });
+
   function flagBtnRecoloring() {
     buttonFlag.classList.toggle('activFlagMode');
     const soundModeFlag = new Audio('sounds/modeFlag.mp3');
