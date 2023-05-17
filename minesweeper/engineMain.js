@@ -1,4 +1,6 @@
 let loose = false;
+let minesAmmount = 10;
+let difficult;
 
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
@@ -32,6 +34,7 @@ function gameStarting(width, height, ammountsBomb) {
   let permisStepSound = true;
   let coutClick = 0;
   let flagMode = false;
+
   timeClickContainer.classList.add('timeClickContainer');
   timeClickContainer.append(clickDisplay);
   timeClickContainer.append(timeDisplay);
@@ -53,8 +56,16 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   buttonRestart.addEventListener('click', () => {
-    bodyHTML.innerHTML = '';
-    gameStarting(10, 10, 10);
+    if (difficult === 'easy') {
+      bodyHTML.innerHTML = '';
+      gameStarting(10, 10, minesAmmount);
+    } else if (difficult === 'medium') {
+      bodyHTML.innerHTML = '';
+      gameStarting(15, 15, minesAmmount);
+    } else if (difficult === 'hard') {
+      bodyHTML.innerHTML = '';
+      gameStarting(25, 25, minesAmmount);
+    }
     const restartSound = new Audio('sounds/restart.mp3');
     restartSound.play();
   });
@@ -121,16 +132,22 @@ function gameStarting(width, height, ammountsBomb) {
       choseDifficultSound.play();
       bodyHTML.innerHTML = '';
       gameStarting(10, 10, selectAmmount.value);
+      minesAmmount = selectAmmount.value;
+      difficult = 'easy';
     });
     buttonMedium.addEventListener('click', () => {
       choseDifficultSound.play();
       bodyHTML.innerHTML = '';
       gameStarting(15, 15, selectAmmount.value);
+      minesAmmount = selectAmmount.value;
+      difficult = 'medium';
     });
     buttonHard.addEventListener('click', () => {
       choseDifficultSound.play();
       bodyHTML.innerHTML = '';
       gameStarting(25, 25, selectAmmount.value);
+      minesAmmount = selectAmmount.value;
+      difficult = 'hard';
     });
 
     const diffcultSound = new Audio('sounds/difficult.mp3');
