@@ -88,7 +88,6 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   function windowWinnig() {
-   // localStorageSaving();
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
     windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${countClick} moves!`;
@@ -101,6 +100,7 @@ function gameStarting(width, height, ammountsBomb) {
       arrClicks.unshift(countClick);
       arrTimes.unshift(timeDisplay.textContent);
     }
+    localStorageSaving();
     const buttonWinner = document.createElement('button');
     buttonWinner.classList.add('buttonWinner');
     buttonWinner.innerText = 'OK';
@@ -202,12 +202,12 @@ function gameStarting(width, height, ammountsBomb) {
     buttonCloseScore.classList.add('buttonCloseScore');
     buttonCloseScore.innerText = 'Close';
     windowScore.append(buttonCloseScore);
-    // if (JSON.parse(localStorage.getItem('arrClicks')) !== null) {
-    //   arrClicks = JSON.parse(localStorage.getItem('arrClicks'));
-    // }
-    // if (JSON.parse(localStorage.getItem('arrTimes')) !== null) {
-    //   arrTimes = JSON.parse(localStorage.getItem('arrTimes'));
-    // }
+    if (JSON.parse(localStorage.getItem('arrClicks')) !== null) {
+      arrClicks = JSON.parse(localStorage.getItem('arrClicks'));
+    }
+    if (JSON.parse(localStorage.getItem('arrTimes')) !== null) {
+      arrTimes = JSON.parse(localStorage.getItem('arrTimes'));
+    }
     for (let i = 0; i < arrClicks.length; i += 1) {
       const lineScore = document.createElement('div');
       lineScore.classList.add('lineScore');
