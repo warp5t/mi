@@ -3,6 +3,7 @@ let minesAmmount = 10;
 let difficult;
 let arrClicks = [];
 let arrTimes = [];
+let mutting = false;
 
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
@@ -45,16 +46,22 @@ function gameStarting(width, height, ammountsBomb) {
   let flagMode = false;
 
   const saveLoadMuteContainer = document.createElement('div');
-  saveLoadMuteContainer.classList.add('saveLoadContainer');
+  saveLoadMuteContainer.classList.add('saveLoadMuteContainer');
   const buttonSave = document.createElement('button');
-  buttonSave.classList.add('buttonSave');
+  buttonSave.classList.add('buttonStyle');
   buttonSave.innerText = 'Save';
   const buttonLoad = document.createElement('button');
-  buttonLoad.classList.add('buttonLoad');
+  buttonLoad.classList.add('buttonStyle');
   buttonLoad.innerText = 'Load';
   const buttonMute = document.createElement('button');
-  buttonMute.classList.add('buttonMute');
-  buttonLoad.innerText = 'Mute';
+  buttonMute.classList.add('buttonStyle');
+  if (mutting === true) {
+    buttonMute.classList.add('buttonRestyle');
+  }
+  buttonMute.innerText = 'Mute';
+  saveLoadMuteContainer.append(buttonSave);
+  saveLoadMuteContainer.append(buttonLoad);
+  saveLoadMuteContainer.append(buttonMute);
 
   timeClickContainer.classList.add('timeClickContainer');
   timeClickContainer.append(clickDisplay);
@@ -63,6 +70,7 @@ function gameStarting(width, height, ammountsBomb) {
   containerField.prepend(containerCells);
   containerField.prepend(optionMode);
   containerField.prepend(scoreFlagMode);
+  containerField.prepend(saveLoadMuteContainer);
   containerField.prepend(timeClickContainer);
   containerField.classList.add('containerField');
   containerCells.classList.add('field');
@@ -75,6 +83,15 @@ function gameStarting(width, height, ammountsBomb) {
       containerCells.append(cellUnit);
     }
   }
+
+  buttonMute.addEventListener('click', () => {
+    buttonMute.classList.toggle('buttonRestyle');
+    if (mutting === false) {
+      mutting = true;
+    } else if (mutting === true) {
+      mutting = false;
+    }
+  });
 
   buttonRestart.addEventListener('click', () => {
     if (difficult === 'easy') {
@@ -90,8 +107,10 @@ function gameStarting(width, height, ammountsBomb) {
       bodyHTML.innerHTML = '';
       gameStarting(10, 10, minesAmmount);
     }
-    const restartSound = new Audio('sounds/restart.mp3');
-    restartSound.play();
+    if (mutting === false) {
+      const restartSound = new Audio('sounds/restart.mp3');
+      restartSound.play();
+    }
   });
 
   function localStorageSaving() {
@@ -121,8 +140,10 @@ function gameStarting(width, height, ammountsBomb) {
 
     buttonWinner.addEventListener('click', () => {
       bodyHTML.innerHTML = '';
-      const bleepSound = new Audio('sounds/bleep-sound.mp3');
-      bleepSound.play();
+      if (mutting === false) { 
+        const bleepSound = new Audio('sounds/bleep-sound.mp3');
+        bleepSound.play();
+      }
       gameStarting(10, 10, 10);
     });
   }
@@ -168,21 +189,27 @@ function gameStarting(width, height, ammountsBomb) {
     const choseDifficultSound = new Audio('sounds/difficultChose.mp3');
 
     buttonEasy.addEventListener('click', () => {
-      choseDifficultSound.play();
+      if (mutting === false) {
+        choseDifficultSound.play();
+      }
       bodyHTML.innerHTML = '';
       gameStarting(10, 10, selectAmmount.value);
       minesAmmount = selectAmmount.value;
       difficult = 'easy';
     });
     buttonMedium.addEventListener('click', () => {
-      choseDifficultSound.play();
+      if (mutting === false) {
+        choseDifficultSound.play();
+      }
       bodyHTML.innerHTML = '';
       gameStarting(15, 15, selectAmmount.value);
       minesAmmount = selectAmmount.value;
       difficult = 'medium';
     });
     buttonHard.addEventListener('click', () => {
-      choseDifficultSound.play();
+      if (mutting === false) {
+        choseDifficultSound.play();
+      }
       bodyHTML.innerHTML = '';
       gameStarting(25, 25, selectAmmount.value);
       minesAmmount = selectAmmount.value;
@@ -190,13 +217,17 @@ function gameStarting(width, height, ammountsBomb) {
     });
 
     const diffcultSound = new Audio('sounds/difficult.mp3');
-    diffcultSound.play();
+    if (mutting === false) {
+      diffcultSound.play();
+    }
   });
 
   function flagBtnRecoloring() {
-    buttonFlag.classList.toggle('activFlagMode');
+    buttonFlag.classList.toggle('buttonRestyle');
     const soundModeFlag = new Audio('sounds/modeFlag.mp3');
-    soundModeFlag.play();
+    if (mutting === false) {
+      soundModeFlag.play();
+    }
   }
 
   buttonFlag.addEventListener('click', () => {
@@ -207,7 +238,9 @@ function gameStarting(width, height, ammountsBomb) {
 
   scoreButton.addEventListener('click', () => {
     const scoreSound = new Audio('sounds/score.mp3');
-    scoreSound.play();
+    if (mutting === false) {
+      scoreSound.play();
+    }
     const windowScore = document.createElement('div');
     windowScore.classList.add('windowScore');
     const buttonCloseScore = document.createElement('button');
@@ -229,7 +262,9 @@ function gameStarting(width, height, ammountsBomb) {
     bodyHTML.append(windowScore);
     buttonCloseScore.addEventListener('click', () => {
       const closeScoreSound = new Audio('sounds/closeScore.mp3');
-      closeScoreSound.play();
+      if (mutting === false) {
+        closeScoreSound.play();
+      }
       windowScore.remove();
     });
   });
@@ -237,7 +272,9 @@ function gameStarting(width, height, ammountsBomb) {
   function openCellChecking(countCellOpen) {
     if (countCellOpen === 1) {
       const winnerSound = new Audio('sounds/win.mp3');
-      winnerSound.play();
+      if (mutting === false) {
+        winnerSound.play();
+      }
       windowWinnig();
     }
   }
@@ -366,7 +403,9 @@ function gameStarting(width, height, ammountsBomb) {
       imageBomb.src = 'bomb.png';
       cell.appendChild(imageBomb);
       const explSound = new Audio('sounds/explosion.wav');
-      explSound.play();
+      if (mutting === false) {
+        explSound.play();
+      }
       loose = true;
       return;
     }
@@ -380,7 +419,9 @@ function gameStarting(width, height, ammountsBomb) {
       cellColoring(count, index);
       if (permisStepSound === true) {
         const clickSound = new Audio('sounds/notification.wav');
-        clickSound.play();
+        if (mutting === false) {
+          clickSound.play();
+        }
         permisStepSound = false;
       }
       return;
@@ -388,7 +429,9 @@ function gameStarting(width, height, ammountsBomb) {
     if (count === 0) {
       if (permisBonusSound === true) {
         const bonusSound = new Audio('sounds/bonus.wav');
-        bonusSound.play();
+        if (mutting === false) {
+          bonusSound.play();
+        }
         permisBonusSound = false;
         permisStepSound = false;
       }
@@ -416,7 +459,9 @@ function gameStarting(width, height, ammountsBomb) {
         imageFlag.src = 'flag.png';
         arrCells[index].appendChild(imageFlag);
         const flagSound = new Audio('sounds/flag.mp3');
-        flagSound.play();
+        if (mutting === false) {
+          flagSound.play();
+        }
       } else if (flagMode === false) {
         countClick += 1;
         clickDisplay.innerText = `Clicks: ${countClick}`;
@@ -441,7 +486,9 @@ function gameStarting(width, height, ammountsBomb) {
       buttonRepeat.addEventListener('click', () => {
         bodyHTML.innerHTML = '';
         const bleepSound = new Audio('sounds/bleep-sound.mp3');
-        bleepSound.play();
+        if (mutting === false) {
+          bleepSound.play();
+        }
         gameStarting(10, 10, 10);
       });
     }

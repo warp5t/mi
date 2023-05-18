@@ -207,10 +207,6 @@ img {
   }
 }
 
-.activFlagMode{
-  background-color:rgb(177, 109, 241)
-}
-
 .optionMode {
   display: flex;
   width: 100%;
@@ -365,6 +361,7 @@ img {
 
 .saveLoadMuteContainer {
   display: flex;
+  flex-direction: row;
 }
 
 @media(max-width:350px) {
@@ -379,4 +376,9 @@ img {
 
 .buttonLoad {
 
+}
+
+.buttonRestyle {
+  background-color:rgb(116, 116, 248);
+  color: beige;
 }
