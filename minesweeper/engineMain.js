@@ -12,18 +12,18 @@ function gameStarting(width, height, ammountsBomb) {
   scoreFlagMode.classList.add('scoreFlagMode');
   const scoreButton = document.createElement('button');
   scoreButton.innerText = 'Score';
-  scoreButton.classList.add('buttonFlag');
+  scoreButton.classList.add('buttonStyle');
   const buttonFlag = document.createElement('button');
-  buttonFlag.classList.add('buttonFlag');
+  buttonFlag.classList.add('buttonStyle');
   buttonFlag.innerText = 'Mode flag';
   scoreFlagMode.append(scoreButton);
   scoreFlagMode.append(buttonFlag);
 
   const buttonRestart = document.createElement('button');
-  buttonRestart.classList.add('buttonRestart');
+  buttonRestart.classList.add('buttonStyle');
   buttonRestart.innerText = 'Restart';
   const buttonDifficult = document.createElement('button');
-  buttonDifficult.classList.add('buttonDifficult');
+  buttonDifficult.classList.add('buttonStyle');
   buttonDifficult.innerText = 'Difficult';
   const optionMode = document.createElement('div');
   optionMode.classList.add('optionMode');
@@ -43,6 +43,18 @@ function gameStarting(width, height, ammountsBomb) {
   let permisStepSound = true;
   let countClick = 0;
   let flagMode = false;
+
+  const saveLoadMuteContainer = document.createElement('div');
+  saveLoadMuteContainer.classList.add('saveLoadContainer');
+  const buttonSave = document.createElement('button');
+  buttonSave.classList.add('buttonSave');
+  buttonSave.innerText = 'Save';
+  const buttonLoad = document.createElement('button');
+  buttonLoad.classList.add('buttonLoad');
+  buttonLoad.innerText = 'Load';
+  const buttonMute = document.createElement('button');
+  buttonMute.classList.add('buttonMute');
+  buttonLoad.innerText = 'Mute';
 
   timeClickContainer.classList.add('timeClickContainer');
   timeClickContainer.append(clickDisplay);
