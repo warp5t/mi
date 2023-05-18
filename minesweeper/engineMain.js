@@ -1,8 +1,8 @@
 let loose = false;
 let minesAmmount = 10;
 let difficult;
-const arrClicks = [];
-const arrTimes = [];
+let arrClicks = [];
+let arrTimes = [];
 
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
@@ -74,12 +74,21 @@ function gameStarting(width, height, ammountsBomb) {
     } else if (difficult === 'hard') {
       bodyHTML.innerHTML = '';
       gameStarting(25, 25, minesAmmount);
+    } else {
+      bodyHTML.innerHTML = '';
+      gameStarting(10, 10, minesAmmount);
     }
     const restartSound = new Audio('sounds/restart.mp3');
     restartSound.play();
   });
 
+  function localStorageSaving() {
+    localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
+    localStorage.setItem('arrTimes', JSON.stringify(arrTimes));
+  }
+
   function windowWinnig() {
+   // localStorageSaving();
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
     windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${countClick} moves!`;
@@ -193,6 +202,12 @@ function gameStarting(width, height, ammountsBomb) {
     buttonCloseScore.classList.add('buttonCloseScore');
     buttonCloseScore.innerText = 'Close';
     windowScore.append(buttonCloseScore);
+    // if (JSON.parse(localStorage.getItem('arrClicks')) !== null) {
+    //   arrClicks = JSON.parse(localStorage.getItem('arrClicks'));
+    // }
+    // if (JSON.parse(localStorage.getItem('arrTimes')) !== null) {
+    //   arrTimes = JSON.parse(localStorage.getItem('arrTimes'));
+    // }
     for (let i = 0; i < arrClicks.length; i += 1) {
       const lineScore = document.createElement('div');
       lineScore.classList.add('lineScore');
