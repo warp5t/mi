@@ -1,10 +1,8 @@
 let loose = false;
 let minesAmmount = 10;
 let difficult;
-const arrClicks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-arrClicks.length = 0;
-const arrTimes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-arrTimes.length = 0;
+const arrClicks = [];
+const arrTimes = [];
 
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
@@ -85,8 +83,15 @@ function gameStarting(width, height, ammountsBomb) {
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
     windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${countClick} moves!`;
-    arrClicks.push(countClick);
-    arrTimes.push(timeDisplay.textContent);
+    if (arrClicks.length === 10 && arrTimes.length === 10) {
+      arrClicks.unshift(countClick);
+      arrClicks.splice(9, 1);
+      arrTimes.unshift(timeDisplay.textContent);
+      arrTimes.splice(9, 1);
+    } else {
+      arrClicks.unshift(countClick);
+      arrTimes.unshift(timeDisplay.textContent);
+    }
     const buttonWinner = document.createElement('button');
     buttonWinner.classList.add('buttonWinner');
     buttonWinner.innerText = 'OK';
