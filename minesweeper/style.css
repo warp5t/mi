@@ -116,8 +116,8 @@ img {
 }
 
 .colorCode3{
-  background-color: rgb(233, 38, 168);
-  color: rgb(127, 249, 180);
+  background-color: rgb(234, 93, 0);
+  color: rgb(227, 253, 155);
 }
 
 .colorCode4{
@@ -353,10 +353,18 @@ img {
   background-color:darkblue;
   border: 2px rgb(239, 71, 245) solid;
   color: aliceblue;
+  margin: 50px 0 40px 0;
 }
 
 .lineScore {
+  color: rgb(95, 66, 13);
   padding: 10px;
+  font-size: 30px;
+}
+@media(max-width: 350px) {
+  .lineScore {
+    font-size: 15px;
+  }
 }
 
 .saveLoadMuteContainer {
