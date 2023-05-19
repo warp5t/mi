@@ -63,6 +63,10 @@ function gameStarting(width, height, ammountsBomb) {
   buttonLoad.innerText = 'Load';
   const buttonMute = document.createElement('button');
   buttonMute.classList.add('buttonStyle');
+  const buttonColorTheme = document.createElement('button');
+  buttonColorTheme.classList.add('buttonStyle');
+  buttonColorTheme.innerText = 'Dark Theme';
+
   if (mutting === true) {
     buttonMute.classList.add('buttonRestyle');
   }
@@ -80,6 +84,7 @@ function gameStarting(width, height, ammountsBomb) {
   containerField.prepend(scoreFlagMode);
   containerField.prepend(saveLoadMuteContainer);
   containerField.prepend(timeClickContainer);
+  containerField.append(buttonColorTheme);
   containerField.classList.add('containerField');
   containerCells.classList.add('containerCells');
   bodyHTML.prepend(containerField);
@@ -588,6 +593,38 @@ function gameStarting(width, height, ammountsBomb) {
       });
     }
   }
+
+  function themeChanging() {
+    scoreButton.classList.toggle('buttonDark');
+    buttonFlag.classList.toggle('buttonDark');
+    buttonRestart.classList.toggle('buttonDark');
+    buttonDifficult.classList.toggle('buttonDark');
+    buttonSave.classList.toggle('buttonDark');
+    buttonLoad.classList.toggle('buttonDark');
+    buttonMute.classList.toggle('buttonDark');
+    buttonColorTheme.classList.toggle('buttonDark');
+
+    containerCells.classList.toggle('containerFieldDark');
+
+    timeDisplay.classList.toggle('displayClickContainerDark');
+    clickDisplay.classList.toggle('displayClickContainerDark');
+
+    bodyHTML.classList.toggle('bodyDark');
+
+    const cellCopyes = document.querySelectorAll('.cell');
+    cellCopyes.forEach((element) => {
+      element.classList.toggle('cellDark');
+    });
+    //cellCopyes.classList.toggle('cellDark');
+  }
+
+  buttonColorTheme.addEventListener('click', () => {
+    themeChanging();
+    if (mutting === false) {
+      const colorThemeSound = new Audio('sounds/theme.mp3');
+      colorThemeSound.play();
+    }
+  });
 
   setInterval(() => {
     time.timeCounting();

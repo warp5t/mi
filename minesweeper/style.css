@@ -9,6 +9,7 @@ body{
   justify-content: center;
   align-items: center;
   min-height: 100%;
+  background-color:#fffec7;
 }
 
 .containerCells {
@@ -389,4 +390,29 @@ img {
 .buttonRestyle {
   background-color:rgb(116, 116, 248);
   color: beige;
+}
+
+.buttonDark {
+background-color: rgb(45, 113, 141);
+border: #3e5908 2px solid;
+color: rgb(176, 204, 255);
+}
+
+/* .containerFieldDark {
+  border: #52a3ac 2px solid;
+} */
+
+.displayClickContainerDark {
+  border: rgb(164, 192, 242) 1px solid;
+  background-color: rgb(115, 122, 20);
+  color: #a4c561;
+}
+
+.bodyDark {
+  background-color:#4d6461;
+}
+.cellDark {
+  border: rgb(4, 168, 72) 1px solid;
+  color: rgb(226, 220, 136);
+  background-color: rgb(14, 13, 69);
 }
