@@ -11,7 +11,7 @@ body{
   min-height: 100%;
 }
 
-.field {
+.containerCells {
 display: grid;
 grid-template-columns: repeat(var(--columnAmmount), 40px);
 /* grid-template-rows: repeat(var(--columnAmmount), 40px); */
@@ -21,13 +21,13 @@ height: 100%;
 }
 
 @media(max-width: 350px){
-  .field{
+  .containerCells{
     grid-template-columns: repeat(var(--columnAmmount), 25px);
   }
 }
 
 @media(max-width: 450px){
-  .field{
+  .containerCells{
     grid-template-columns: repeat(var(--columnAmmount), 30px);
   }
 }

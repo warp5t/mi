@@ -79,7 +79,7 @@ function gameStarting(width, height, ammountsBomb) {
   containerField.prepend(saveLoadMuteContainer);
   containerField.prepend(timeClickContainer);
   containerField.classList.add('containerField');
-  containerCells.classList.add('field');
+  containerCells.classList.add('containerCells');
   bodyHTML.prepend(containerField);
 
   function cellCreating(cellCount) {
@@ -95,7 +95,7 @@ function gameStarting(width, height, ammountsBomb) {
   cellCreating(cellsCount);
   let countCellOpen = cellsCount - ammountsBomb;
   const cells = document.querySelectorAll('.cell');
-  let arrCells = [...cells];
+  const arrCells = [...cells];
 
   function timeDisplaying(hour, minute, second) {
     if (minute < 10 && second < 10) {
@@ -130,7 +130,7 @@ function gameStarting(width, height, ammountsBomb) {
     }
   }
 
-  let time = new Time();
+  const time = new Time();
 
   function localStorageSaving() {
     localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
@@ -139,7 +139,6 @@ function gameStarting(width, height, ammountsBomb) {
     localStorage.setItem('mutting', JSON.stringify(mutting));
     localStorage.setItem('difficult', JSON.stringify(difficult));
     localStorage.setItem('countClick', JSON.stringify(countClick));
-    // localStorage.setItem('time', JSON.stringify(time));
     localStorage.setItem('flagMode', JSON.stringify(flagMode));
     // localStorage.setItem('arrCells', JSON.stringify(arrCells));
     localStorage.setItem('minesAmmount', JSON.stringify(minesAmmount));
@@ -175,35 +174,6 @@ function gameStarting(width, height, ammountsBomb) {
     //   minesAmmount = JSON.parse(localStorage.getItem('minesAmmount'));
     // }
   }
-
-  let copyField;
-  buttonSave.addEventListener('click', () => {
-    timeSave.seconds = time.seconds;
-    timeSave.minutes = time.minutes;
-    timeSave.hours = time.hours;
-    localStorageSaving();
-    copyField = containerCells.cloneNode(true);
-    if (mutting === false) {
-      const saveSound = new Audio('sounds/save.mp3');
-      saveSound.play();
-    }
-  });
-
-  buttonLoad.addEventListener('click', () => {
-    progressLoading();
-    time.seconds = timeSave.seconds;
-    time.minutes = timeSave.minutes;
-    time.hours = timeSave.hours;
-    clickDisplay.innerText = `Clicks: ${countClick}`;
-    containerCells.remove();
-    containerField.append(copyField);
-    if (mutting === false) {
-      const loadSound = new Audio('sounds/load.mp3');
-      loadSound.play();
-    }
-    console.log(time.seconds);
-    time.seconds = 20;
-  });
 
   buttonMute.addEventListener('click', () => {
     buttonMute.classList.toggle('buttonRestyle');
@@ -405,13 +375,6 @@ function gameStarting(width, height, ammountsBomb) {
     }
   }
 
-  // containerCells.style.setProperty('--columnAmmount', height);
-  // const cellsCount = width * height;
-  // cellCreating(cellsCount);
-  // let countCellOpen = cellsCount - ammountsBomb;
-  // const cells = document.querySelectorAll('.cell');
-  // const arrCells = [...cells];
-
   function verificating(row, column) {
     return row >= 0
          && row < height
@@ -526,30 +489,63 @@ function gameStarting(width, height, ammountsBomb) {
     }
   }
 
-  bodyHTML.addEventListener('click', (event) => {
-    if (event.target.tagName === 'P') {
-      const index = arrCells.indexOf(event.target);
-      if (permisSpreadBomb === true) {
-        bombRandoming(bombs, ammountsBomb, cellsCount, index);
-        permisSpreadBomb = false;
-      }
-      const column = index % width;
-      const row = (index - column) / width;
-      if (flagMode === true) {
-        const imageFlag = document.createElement('img');
-        imageFlag.src = 'flag.png';
-        arrCells[index].appendChild(imageFlag);
-        const flagSound = new Audio('sounds/flag.mp3');
-        if (mutting === false) {
-          flagSound.play();
+  function clickCellsListening(node) {
+    node.addEventListener('click', (event) => {
+      console.log(event.target);
+      if (event.target.tagName === 'P') {
+        const index = arrCells.indexOf(event.target);
+        console.log(index);
+        if (permisSpreadBomb === true) {
+          bombRandoming(bombs, ammountsBomb, cellsCount, index);
+          permisSpreadBomb = false;
         }
-      } else if (flagMode === false) {
-        countClick += 1;
-        clickDisplay.innerText = `Clicks: ${countClick}`;
-        cellOpening(row, column);
+        const column = index % width;
+        const row = (index - column) / width;
+        if (flagMode === true) {
+          const imageFlag = document.createElement('img');
+          imageFlag.src = 'flag.png';
+          arrCells[index].appendChild(imageFlag);
+          const flagSound = new Audio('sounds/flag.mp3');
+          if (mutting === false) {
+            flagSound.play();
+          }
+        } else if (flagMode === false) {
+          countClick += 1;
+          clickDisplay.innerText = `Clicks: ${countClick}`;
+          cellOpening(row, column);
+        }
+        permisBonusSound = true;
+        permisStepSound = true;
       }
-      permisBonusSound = true;
-      permisStepSound = true;
+    });
+  }
+  clickCellsListening(containerCells);
+
+  let copyField;
+  buttonSave.addEventListener('click', () => {
+    timeSave.seconds = time.seconds;
+    timeSave.minutes = time.minutes;
+    timeSave.hours = time.hours;
+    localStorageSaving();
+    copyField = containerCells.cloneNode(true);
+    clickCellsListening(copyField);
+    if (mutting === false) {
+      const saveSound = new Audio('sounds/save.mp3');
+      saveSound.play();
+    }
+  });
+
+  buttonLoad.addEventListener('click', () => {
+    progressLoading();
+    time.seconds = timeSave.seconds;
+    time.minutes = timeSave.minutes;
+    time.hours = timeSave.hours;
+    clickDisplay.innerText = `Clicks: ${countClick}`;
+    containerCells.remove();
+    containerField.append(copyField);
+    if (mutting === false) {
+      const loadSound = new Audio('sounds/load.mp3');
+      loadSound.play();
     }
   });
 
