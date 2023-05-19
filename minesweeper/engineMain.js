@@ -5,6 +5,12 @@ let arrClicks = [];
 let arrTimes = [];
 let mutting = false;
 
+let timeSave = {
+  seconds: 0,
+  minutes: 0,
+  hours: 0,
+};
+
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
   const containerField = document.createElement('div');
@@ -84,6 +90,120 @@ function gameStarting(width, height, ammountsBomb) {
     }
   }
 
+  containerCells.style.setProperty('--columnAmmount', height);
+  const cellsCount = width * height;
+  cellCreating(cellsCount);
+  let countCellOpen = cellsCount - ammountsBomb;
+  const cells = document.querySelectorAll('.cell');
+  let arrCells = [...cells];
+
+  function timeDisplaying(hour, minute, second) {
+    if (minute < 10 && second < 10) {
+      timeDisplay.innerHTML = `${hour} :  0${minute} : 0${second}`;
+    } else if (minute < 10 && second > 10) {
+      timeDisplay.innerHTML = `${hour} :  0${minute} : ${second}`;
+    } else if (minute > 10 && second < 10) {
+      timeDisplay.innerHTML = `${hour} :  ${minute} : 0${second}`;
+    } else if (minute > 10 && second > 10) {
+      timeDisplay.innerHTML = `${hour} :  ${minute} : ${second}`;
+    }
+  }
+
+  class Time {
+    constructor() {
+      this.hours = 0;
+      this.minutes = 0;
+      this.seconds = 0;
+    }
+
+    timeCounting() {
+      this.seconds += 1;
+      if (this.seconds === 60) {
+        this.seconds = 1;
+        this.minutes += 1;
+      }
+      if (this.minutes === 60) {
+        this.minutes = 0;
+        this.hours += 1;
+      }
+      timeDisplaying(this.hours, this.minutes, this.seconds);
+    }
+  }
+
+  let time = new Time();
+
+  function localStorageSaving() {
+    localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
+    localStorage.setItem('arrTimes', JSON.stringify(arrTimes));
+    localStorage.setItem('timeSave', JSON.stringify(timeSave));
+    localStorage.setItem('mutting', JSON.stringify(mutting));
+    localStorage.setItem('difficult', JSON.stringify(difficult));
+    localStorage.setItem('countClick', JSON.stringify(countClick));
+    // localStorage.setItem('time', JSON.stringify(time));
+    localStorage.setItem('flagMode', JSON.stringify(flagMode));
+    // localStorage.setItem('arrCells', JSON.stringify(arrCells));
+    localStorage.setItem('minesAmmount', JSON.stringify(minesAmmount));
+    // localStorage.setItem('cells', JSON.stringify(cells));
+  }
+
+  function progressLoading() {
+    if (JSON.parse(localStorage.getItem('arrClicks')) !== null) {
+      arrClicks = JSON.parse(localStorage.getItem('arrClicks'));
+    }
+    if (JSON.parse(localStorage.getItem('arrTimes')) !== null) {
+      arrTimes = JSON.parse(localStorage.getItem('arrTimes'));
+    }
+    // if (JSON.parse(localStorage.getItem('mutting')) !== null) {
+    //   mutting = JSON.parse(localStorage.getItem('mutting'));
+    // }
+    // if (JSON.parse(localStorage.getItem('difficult')) !== null) {
+    //   difficult = JSON.parse(localStorage.getItem('difficult'));
+    // }
+    // if (JSON.parse(localStorage.getItem('countClick')) !== null) {
+    //   countClick = JSON.parse(localStorage.getItem('countClick'));
+    // }
+    if (JSON.parse(localStorage.getItem('timeSave')) !== null) {
+      timeSave = JSON.parse(localStorage.getItem('timeSave'));
+    }
+    // if (JSON.parse(localStorage.getItem('flagMode')) !== null) {
+    //   flagMode = JSON.parse(localStorage.getItem('flagMode'));
+    // }
+    // if (JSON.parse(localStorage.getItem('arrCells')) !== null) {
+    //   arrCells = JSON.parse(localStorage.getItem('arrCells'));
+    // }
+    // if (JSON.parse(localStorage.getItem('minesAmmount')) !== null) {
+    //   minesAmmount = JSON.parse(localStorage.getItem('minesAmmount'));
+    // }
+  }
+
+  let copyField;
+  buttonSave.addEventListener('click', () => {
+    timeSave.seconds = time.seconds;
+    timeSave.minutes = time.minutes;
+    timeSave.hours = time.hours;
+    localStorageSaving();
+    copyField = containerCells.cloneNode(true);
+    if (mutting === false) {
+      const saveSound = new Audio('sounds/save.mp3');
+      saveSound.play();
+    }
+  });
+
+  buttonLoad.addEventListener('click', () => {
+    progressLoading();
+    time.seconds = timeSave.seconds;
+    time.minutes = timeSave.minutes;
+    time.hours = timeSave.hours;
+    containerCells.remove();
+    containerField.append(copyField);
+    if (mutting === false) {
+      const loadSound = new Audio('sounds/load.mp3');
+      loadSound.play();
+    }
+    console.log(time.seconds);
+    time.seconds = 20;
+  });
+
   buttonMute.addEventListener('click', () => {
     buttonMute.classList.toggle('buttonRestyle');
     if (mutting === false) {
@@ -113,11 +233,6 @@ function gameStarting(width, height, ammountsBomb) {
     }
   });
 
-  function localStorageSaving() {
-    localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
-    localStorage.setItem('arrTimes', JSON.stringify(arrTimes));
-  }
-
   function windowWinnig() {
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
@@ -131,7 +246,8 @@ function gameStarting(width, height, ammountsBomb) {
       arrClicks.unshift(countClick);
       arrTimes.unshift(timeDisplay.textContent);
     }
-    localStorageSaving();
+    localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
+    localStorage.setItem('arrTimes', JSON.stringify(arrTimes));
     const buttonWinner = document.createElement('button');
     buttonWinner.classList.add('buttonWinner');
     buttonWinner.innerText = 'OK';
@@ -140,7 +256,7 @@ function gameStarting(width, height, ammountsBomb) {
 
     buttonWinner.addEventListener('click', () => {
       bodyHTML.innerHTML = '';
-      if (mutting === false) { 
+      if (mutting === false) {
         const bleepSound = new Audio('sounds/bleep-sound.mp3');
         bleepSound.play();
       }
@@ -288,48 +404,12 @@ function gameStarting(width, height, ammountsBomb) {
     }
   }
 
-  function timeDisplaying(hour, minute, second) {
-    if (minute < 10 && second < 10) {
-      timeDisplay.innerHTML = `${hour} :  0${minute} : 0${second}`;
-    } else if (minute < 10 && second > 10) {
-      timeDisplay.innerHTML = `${hour} :  0${minute} : ${second}`;
-    } else if (minute > 10 && second < 10) {
-      timeDisplay.innerHTML = `${hour} :  ${minute} : 0${second}`;
-    } else if (minute > 10 && second > 10) {
-      timeDisplay.innerHTML = `${hour} :  ${minute} : ${second}`;
-    }
-  }
-  timeDisplaying();
-
-  class Time {
-    constructor() {
-      this.hours = 0;
-      this.minutes = 0;
-      this.seconds = 1;
-    }
-
-    timeCounting() {
-      this.seconds += 1;
-      if (this.seconds === 60) {
-        this.seconds = 1;
-        this.minutes += 1;
-      }
-      if (this.minutes === 60) {
-        this.minutes = 0;
-        this.hours += 1;
-      }
-      timeDisplaying(this.hours, this.minutes, this.seconds);
-    }
-  }
-
-  const time = new Time();
-
-  containerCells.style.setProperty('--columnAmmount', height);
-  const cellsCount = width * height;
-  cellCreating(cellsCount);
-  let countCellOpen = cellsCount - ammountsBomb;
-  const cells = document.querySelectorAll('.cell');
-  const arrCells = [...cells];
+  // containerCells.style.setProperty('--columnAmmount', height);
+  // const cellsCount = width * height;
+  // cellCreating(cellsCount);
+  // let countCellOpen = cellsCount - ammountsBomb;
+  // const cells = document.querySelectorAll('.cell');
+  // const arrCells = [...cells];
 
   function verificating(row, column) {
     return row >= 0
