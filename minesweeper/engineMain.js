@@ -159,9 +159,9 @@ function gameStarting(width, height, ammountsBomb) {
     // if (JSON.parse(localStorage.getItem('difficult')) !== null) {
     //   difficult = JSON.parse(localStorage.getItem('difficult'));
     // }
-    // if (JSON.parse(localStorage.getItem('countClick')) !== null) {
-    //   countClick = JSON.parse(localStorage.getItem('countClick'));
-    // }
+    if (JSON.parse(localStorage.getItem('countClick')) !== null) {
+      countClick = JSON.parse(localStorage.getItem('countClick'));
+    }
     if (JSON.parse(localStorage.getItem('timeSave')) !== null) {
       timeSave = JSON.parse(localStorage.getItem('timeSave'));
     }
@@ -194,6 +194,7 @@ function gameStarting(width, height, ammountsBomb) {
     time.seconds = timeSave.seconds;
     time.minutes = timeSave.minutes;
     time.hours = timeSave.hours;
+    clickDisplay.innerText = `Clicks: ${countClick}`;
     containerCells.remove();
     containerField.append(copyField);
     if (mutting === false) {
