@@ -102,6 +102,12 @@ img {
   }
 }
 
+.cellDark {
+  border: rgb(4, 168, 72) 1px solid;
+  color: rgb(226, 220, 136);
+  background-color: rgb(14, 13, 69);
+}
+
 .colorCode0{
   background-color: rgb(215, 216, 211);
 }
@@ -410,9 +416,4 @@ color: rgb(176, 204, 255);
 
 .bodyDark {
   background-color:#4d6461;
-}
-.cellDark {
-  border: rgb(4, 168, 72) 1px solid;
-  color: rgb(226, 220, 136);
-  background-color: rgb(14, 13, 69);
 }

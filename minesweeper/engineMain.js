@@ -613,11 +613,16 @@ function gameStarting(width, height, ammountsBomb) {
 
     const cellCopyes = document.querySelectorAll('.cell');
     cellCopyes.forEach((element) => {
-      if (element.classList.length === 1) {
-        element.classList.add('cellDark');
-      } else if (element.classList.length === 2) {
-        element.classList.remove('cellDark');
+      //console.log(element.className.slice(0, -1));
+      if (element.className.slice(0, -1) !== 'cell colorCode') {
+        element.classList.toggle('cellDark');
+        //console.log(element);
       }
+      // if (element.classList.length === 1) {
+      //   element.classList.add('cellDark');
+      // } else if (element.classList.length === 2) {
+      //   element.classList.remove('cellDark');
+      // }
     });
   }
 
