@@ -612,19 +612,9 @@ function gameStarting(width, height, ammountsBomb) {
     bodyHTML.classList.toggle('bodyDark');
 
     const cellCopyes = document.querySelectorAll('.cell');
-    let nameClass;
     cellCopyes.forEach((element) => {
-      let orderLine = 0;
       if (element.classList.length === 1) {
-        // element.classList.forEach((e) => {
-        //   orderLine += 1;
-        //   if (orderLine === 1) {
-        //     nameClass = e;
-        //   }
-        // });
         element.classList.add('cellDark');
-        // element.classList.toggle(nameClass);
-      //  element.classList.add(nameClass);
       } else if (element.classList.length === 2) {
         element.classList.remove('cellDark');
       }
@@ -642,8 +632,10 @@ function gameStarting(width, height, ammountsBomb) {
   setInterval(() => {
     time.timeCounting();
     if (loose === true) {
-      windowLoosing();
-      loose = false;
+      setTimeout(() => {
+        windowLoosing();
+        loose = false;
+      }, 1400);
     }
   }, 1000);
 }
