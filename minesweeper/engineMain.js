@@ -510,23 +510,25 @@ function gameStarting(width, height, ammountsBomb) {
         const column = index % width;
         const row = (index - column) / width;
         if (flagMode === true) {
-          const imageFlag = document.createElement('img');
-          imageFlag.src = 'flag.png';
-          arrCellsArg[index].appendChild(imageFlag);
-          flagCount += 1;
-          buttonFlag.innerText = `Mode flag: ${flagCount}`;
-          imageFlag.addEventListener('click', (evnt) => {
-            flagCount -= 1;
+          if (cells[index].disabled !== true) {
+            const imageFlag = document.createElement('img');
+            imageFlag.src = 'flag.png';
+            arrCellsArg[index].appendChild(imageFlag);
+            flagCount += 1;
             buttonFlag.innerText = `Mode flag: ${flagCount}`;
-            evnt.target.remove();
+            imageFlag.addEventListener('click', (evnt) => {
+              flagCount -= 1;
+              buttonFlag.innerText = `Mode flag: ${flagCount}`;
+              evnt.target.remove();
+              if (mutting === false) {
+                const removeFlagSound = new Audio('sounds/removeFlag.mp3');
+                removeFlagSound.play();
+              }
+            });
             if (mutting === false) {
-              const removeFlagSound = new Audio('sounds/removeFlag.mp3');
-              removeFlagSound.play();
+              const flagSound = new Audio('sounds/flag.mp3');
+              flagSound.play();
             }
-          });
-          if (mutting === false) {
-            const flagSound = new Audio('sounds/flag.mp3');
-            flagSound.play();
           }
         } else if (flagMode === false) {
           clickDisplay.innerText = `Clicks: ${countClick}`;
@@ -613,16 +615,9 @@ function gameStarting(width, height, ammountsBomb) {
 
     const cellCopyes = document.querySelectorAll('.cell');
     cellCopyes.forEach((element) => {
-      //console.log(element.className.slice(0, -1));
       if (element.className.slice(0, -1) !== 'cell colorCode') {
         element.classList.toggle('cellDark');
-        //console.log(element);
       }
-      // if (element.classList.length === 1) {
-      //   element.classList.add('cellDark');
-      // } else if (element.classList.length === 2) {
-      //   element.classList.remove('cellDark');
-      // }
     });
   }
 
