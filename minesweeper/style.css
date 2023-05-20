@@ -12,6 +12,7 @@ body{
   background-color:#fffec7;
 }
 
+
 .containerCells {
 display: grid;
 grid-template-columns: repeat(var(--columnAmmount), 40px);

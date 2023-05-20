@@ -84,7 +84,7 @@ function gameStarting(width, height, ammountsBomb) {
   containerField.prepend(scoreFlagMode);
   containerField.prepend(saveLoadMuteContainer);
   containerField.prepend(timeClickContainer);
-  containerField.append(buttonColorTheme);
+  containerField.prepend(buttonColorTheme);
   containerField.classList.add('containerField');
   containerCells.classList.add('containerCells');
   bodyHTML.prepend(containerField);
@@ -290,6 +290,9 @@ function gameStarting(width, height, ammountsBomb) {
       gameStarting(10, 10, selectAmmount.value);
       minesAmmount = selectAmmount.value;
       difficult = 'easy';
+      if (bodyHTML.offsetWidth > 320) {
+        bodyHTML.style.justifyContent = 'center';
+      }
     });
     buttonMedium.addEventListener('click', () => {
       if (mutting === false) {
@@ -299,6 +302,9 @@ function gameStarting(width, height, ammountsBomb) {
       gameStarting(15, 15, selectAmmount.value);
       minesAmmount = selectAmmount.value;
       difficult = 'medium';
+      if (bodyHTML.offsetWidth < 645) {
+        bodyHTML.style.justifyContent = 'start';
+      }
     });
     buttonHard.addEventListener('click', () => {
       if (mutting === false) {
@@ -308,6 +314,10 @@ function gameStarting(width, height, ammountsBomb) {
       gameStarting(25, 25, selectAmmount.value);
       minesAmmount = selectAmmount.value;
       difficult = 'hard';
+      console.log(bodyHTML.offsetWidth);
+      if (bodyHTML.offsetWidth < 1040) {
+        bodyHTML.style.justifyContent = 'start';
+      }
     });
 
     const diffcultSound = new Audio('sounds/difficult.mp3');
