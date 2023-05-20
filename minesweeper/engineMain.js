@@ -612,10 +612,23 @@ function gameStarting(width, height, ammountsBomb) {
     bodyHTML.classList.toggle('bodyDark');
 
     const cellCopyes = document.querySelectorAll('.cell');
+    let nameClass;
     cellCopyes.forEach((element) => {
-      element.classList.toggle('cellDark');
+      let orderLine = 0;
+      if (element.classList.length === 1) {
+        // element.classList.forEach((e) => {
+        //   orderLine += 1;
+        //   if (orderLine === 1) {
+        //     nameClass = e;
+        //   }
+        // });
+        element.classList.add('cellDark');
+        // element.classList.toggle(nameClass);
+      //  element.classList.add(nameClass);
+      } else if (element.classList.length === 2) {
+        element.classList.remove('cellDark');
+      }
     });
-    //cellCopyes.classList.toggle('cellDark');
   }
 
   buttonColorTheme.addEventListener('click', () => {
