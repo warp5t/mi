@@ -571,6 +571,8 @@ function gameStarting(width, height, ammountsBomb) {
     timeSave.hours = time.hours;
     copyCells = containerCells.innerHTML;
     localStorageSaving();
+    // copyField = containerCells.cloneNode(true);
+    console.log(copyCells)
     if (mutting === false) {
       const saveSound = new Audio('sounds/save.mp3');
       saveSound.play();
@@ -587,6 +589,7 @@ function gameStarting(width, height, ammountsBomb) {
     containerCells.remove();
     const copyFragment = document.createElement('div');
     copyFragment.classList.add('containerCells')
+    copyFragment.style.setProperty('--columnAmmount', height);
     copyFragment.innerHTML = JSON.parse(localStorage.getItem('cells'));
     containerField.appendChild(copyFragment)
     clickCellsListening(copyFragment, cellsReturn());
