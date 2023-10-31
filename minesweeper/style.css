@@ -16,7 +16,6 @@ body{
 .containerCells {
 display: grid;
 grid-template-columns: repeat(var(--columnAmmount), 40px);
-/* grid-template-rows: repeat(var(--columnAmmount), 40px); */
 border: rgb(160, 172, 0) 1px solid;
 width: 100%;
 height: 100%;

@@ -12,6 +12,8 @@ let timeSave = {
   hours: 0,
 };
 
+let copyCells = '';
+
 function gameStarting(width, height, ammountsBomb) {
   const containerCells = document.createElement('div');
   const containerField = document.createElement('div');
@@ -101,8 +103,15 @@ function gameStarting(width, height, ammountsBomb) {
   const cellsCount = width * height;
   cellCreating(cellsCount);
   let countCellOpen = cellsCount - ammountsBomb;
-  let cells = document.querySelectorAll('.cell');
-  let arrCells = [...cells];
+
+  let cells;
+  let arrCells;
+
+  function cellsReturn() {
+    cells = document.querySelectorAll('.cell');
+    arrCells = [...cells];
+    return arrCells
+  }
 
   function timeDisplaying(hour, minute, second) {
     if (minute < 10 && second < 10) {
@@ -150,6 +159,7 @@ function gameStarting(width, height, ammountsBomb) {
     localStorage.setItem('flagCount', JSON.stringify(flagCount));
     localStorage.setItem('minesAmmount', JSON.stringify(minesAmmount));
     // localStorage.setItem('cells', JSON.stringify(cells));
+    localStorage.setItem('cells', JSON.stringify(copyCells));
   }
 
   function progressLoading() {
@@ -549,16 +559,18 @@ function gameStarting(width, height, ammountsBomb) {
       }
     });
   }
-  clickCellsListening(containerCells, arrCells);
+  clickCellsListening(containerCells, cellsReturn());
 
-  let copyField = containerCells.cloneNode(true);
+  // let copyField = containerCells.cloneNode(true);
+  
+  
 
   buttonSave.addEventListener('click', () => {
     timeSave.seconds = time.seconds;
     timeSave.minutes = time.minutes;
     timeSave.hours = time.hours;
+    copyCells = containerCells.innerHTML;
     localStorageSaving();
-    copyField = containerCells.cloneNode(true);
     if (mutting === false) {
       const saveSound = new Audio('sounds/save.mp3');
       saveSound.play();
@@ -573,11 +585,11 @@ function gameStarting(width, height, ammountsBomb) {
     clickDisplay.innerText = `Clicks: ${countClick}`;
     containerCells.removeEventListener('click', clickCellsListening);
     containerCells.remove();
-    containerField.appendChild(copyField.cloneNode(true));
-    cells = document.querySelectorAll('.cell');
-    arrCells = [...cells];
-    // clickCellsListening(copyField, arrCells);
-    clickCellsListening(containerField.lastChild, arrCells);
+    const copyFragment = document.createElement('div');
+    copyFragment.classList.add('containerCells')
+    copyFragment.innerHTML = JSON.parse(localStorage.getItem('cells'));
+    containerField.appendChild(copyFragment)
+    clickCellsListening(copyFragment, cellsReturn());
     if (mutting === false) {
       const loadSound = new Audio('sounds/load.mp3');
       loadSound.play();
