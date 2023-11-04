@@ -100,10 +100,11 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   containerCells.style.setProperty('--columnAmmount', height);
+
   const cellsCount = width * height;
   cellCreating(cellsCount);
   let countCellOpen = cellsCount - ammountsBomb;
-
+  
   let cells;
   let arrCells;
 
@@ -201,7 +202,7 @@ function gameStarting(width, height, ammountsBomb) {
     }
   });
 
-  buttonRestart.addEventListener('click', () => {
+  function restart() {
     if (difficult === 'easy') {
       bodyHTML.innerHTML = '';
       gameStarting(10, 10, minesAmmount);
@@ -219,6 +220,10 @@ function gameStarting(width, height, ammountsBomb) {
       const restartSound = new Audio('sounds/restart.mp3');
       restartSound.play();
     }
+  }
+
+  buttonRestart.addEventListener('click', () => {
+    restart()
   });
 
   function windowWinnig() {
@@ -520,12 +525,14 @@ function gameStarting(width, height, ammountsBomb) {
     node.addEventListener('click', (event) => {
       if (event.target.tagName === 'P') {
         const index = arrCellsArg.indexOf(event.target);
+        console.log(index, ' - index')
         if (cells[index].disabled !== true) {
           countClick += 1;
         }
         if (permisSpreadBomb === true) {
           bombRandoming(bombs, ammountsBomb, cellsCount, index);
           permisSpreadBomb = false;
+          console.log(bombs,'- arr', ammountsBomb,'- bmbsCount', cellsCount,'- ammountPiles', index,'- indexFirstStep')
         }
         const column = index % width;
         const row = (index - column) / width;
@@ -579,24 +586,42 @@ function gameStarting(width, height, ammountsBomb) {
     }
   });
 
+let countRestart = 0;
+
+function createCells() {
+  const containerCells = document.createElement('div');
+  containerCells.classList.add('containerCells')
+  containerCells.style.setProperty('--columnAmmount', height);
+  // cellCreating(cellsCount);
+  containerCells.innerHTML = JSON.parse(localStorage.getItem('cells'));
+  containerField.appendChild(containerCells);
+    // containerCells.appendChild(containerCells)
+    clickCellsListening(containerCells, cellsReturn());
+}
+
   buttonLoad.addEventListener('click', () => {
-    progressLoading();
-    time.seconds = timeSave.seconds;
-    time.minutes = timeSave.minutes;
-    time.hours = timeSave.hours;
-    clickDisplay.innerText = `Clicks: ${countClick}`;
-    containerCells.removeEventListener('click', clickCellsListening);
-    containerCells.remove();
-    const copyFragment = document.createElement('div');
-    copyFragment.classList.add('containerCells')
-    copyFragment.style.setProperty('--columnAmmount', height);
-    copyFragment.innerHTML = JSON.parse(localStorage.getItem('cells'));
-    containerField.appendChild(copyFragment)
-    clickCellsListening(copyFragment, cellsReturn());
-    if (mutting === false) {
-      const loadSound = new Audio('sounds/load.mp3');
-      loadSound.play();
-    }
+   
+      progressLoading();
+      time.seconds = timeSave.seconds;
+      time.minutes = timeSave.minutes;
+      time.hours = timeSave.hours;
+      clickDisplay.innerText = `Clicks: ${countClick}`;
+      containerCells.removeEventListener('click', clickCellsListening);
+      containerCells.remove();
+      // const copyFragment = document.createElement('div');
+      // copyFragment.classList.add('containerCells')
+      // copyFragment.style.setProperty('--columnAmmount', height);
+      // copyFragment.innerHTML = JSON.parse(localStorage.getItem('cells'));
+      // containerField.appendChild(copyFragment)
+      // clickCellsListening(copyFragment, cellsReturn());
+
+      createCells()
+      if (mutting === false) {
+        const loadSound = new Audio('sounds/load.mp3');
+        loadSound.play();
+      }
+      countRestart++;
+
   });
 
   function windowLoosing() {
