@@ -15,7 +15,7 @@ let timeSave = {
 let copyCells = '';
 
 function gameStarting(width, height, ammountsBomb) {
-  const containerCells = document.createElement('div');
+  let containerCells = document.createElement('div');
   const containerField = document.createElement('div');
   const bodyHTML = document.getElementById('body');
   const scoreFlagMode = document.createElement('div');
@@ -589,7 +589,7 @@ function gameStarting(width, height, ammountsBomb) {
 let countRestart = 0;
 
 function createCells() {
-  const containerCells = document.createElement('div');
+  containerCells = document.createElement('div');
   containerCells.classList.add('containerCells')
   containerCells.style.setProperty('--columnAmmount', height);
   // cellCreating(cellsCount);
