@@ -41,7 +41,7 @@ function gameStarting(width, height, ammountsBomb) {
   optionMode.prepend(buttonDifficult);
 
   let permisSpreadBomb = true;
-  const bombs = [];
+  let bombs = [];
 
   const timeDisplay = document.createElement('div');
   timeDisplay.classList.add('displayClickContainer');
@@ -161,6 +161,7 @@ function gameStarting(width, height, ammountsBomb) {
     localStorage.setItem('minesAmmount', JSON.stringify(minesAmmount));
     // localStorage.setItem('cells', JSON.stringify(cells));
     localStorage.setItem('cells', JSON.stringify(copyCells));
+    localStorage.setItem('arrBombs', JSON.stringify(bombs));
   }
 
   function progressLoading() {
@@ -596,6 +597,7 @@ function createCells() {
   containerCells.innerHTML = JSON.parse(localStorage.getItem('cells'));
   containerField.appendChild(containerCells);
     // containerCells.appendChild(containerCells)
+    permisSpreadBomb = false;
     clickCellsListening(containerCells, cellsReturn());
 }
 
@@ -608,14 +610,8 @@ function createCells() {
       clickDisplay.innerText = `Clicks: ${countClick}`;
       containerCells.removeEventListener('click', clickCellsListening);
       containerCells.remove();
-      // const copyFragment = document.createElement('div');
-      // copyFragment.classList.add('containerCells')
-      // copyFragment.style.setProperty('--columnAmmount', height);
-      // copyFragment.innerHTML = JSON.parse(localStorage.getItem('cells'));
-      // containerField.appendChild(copyFragment)
-      // clickCellsListening(copyFragment, cellsReturn());
-
       createCells()
+      bombs = JSON.parse(localStorage.getItem('arrBombs'));
       if (mutting === false) {
         const loadSound = new Audio('sounds/load.mp3');
         loadSound.play();
