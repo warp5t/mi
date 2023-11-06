@@ -13,7 +13,7 @@ let timeSave = {
 };
 
 let copyCells = '';
-
+let width;
 function gameStarting(width, height, ammountsBomb) {
   let containerCells = document.createElement('div');
   const containerField = document.createElement('div');
@@ -111,6 +111,7 @@ function gameStarting(width, height, ammountsBomb) {
   function cellsReturn() {
     cells = document.querySelectorAll('.cell');
     arrCells = [...cells];
+    console.log('arrCells.length - ', arrCells.length)
     return arrCells
   }
 
@@ -162,6 +163,8 @@ function gameStarting(width, height, ammountsBomb) {
     // localStorage.setItem('cells', JSON.stringify(cells));
     localStorage.setItem('cells', JSON.stringify(copyCells));
     localStorage.setItem('arrBombs', JSON.stringify(bombs));
+    localStorage.setItem('height', JSON.stringify(height));
+    localStorage.setItem('width', JSON.stringify(width));
   }
 
   function progressLoading() {
@@ -409,6 +412,7 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   function verificating(row, column) {
+    console.log(row, ' - row',column, ' - column', height, ' - height', width, ' - width')
     return row >= 0
          && row < height
          && column >= 0
@@ -468,6 +472,7 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   function cellOpening(row, column) {
+    console.log('check')
     if (!verificating(row, column)) return;
     const index = row * width + column;
     const cell = cells[index];
@@ -580,7 +585,7 @@ function gameStarting(width, height, ammountsBomb) {
     copyCells = containerCells.innerHTML;
     localStorageSaving();
     // copyField = containerCells.cloneNode(true);
-    console.log(copyCells)
+    // console.log(copyCells)
     if (mutting === false) {
       const saveSound = new Audio('sounds/save.mp3');
       saveSound.play();
@@ -592,6 +597,8 @@ let countRestart = 0;
 function createCells() {
   containerCells = document.createElement('div');
   containerCells.classList.add('containerCells')
+  height = JSON.parse(localStorage.getItem('height'));
+  width = JSON.parse(localStorage.getItem('width'));
   containerCells.style.setProperty('--columnAmmount', height);
   // cellCreating(cellsCount);
   containerCells.innerHTML = JSON.parse(localStorage.getItem('cells'));
