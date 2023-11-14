@@ -5,6 +5,7 @@ let arrClicks = [];
 let arrTimes = [];
 let mutting = false;
 let flagCount = 0;
+let darkTheme = false;
 
 let timeSave = {
   seconds: 0,
@@ -14,7 +15,14 @@ let timeSave = {
 
 let copyCells = '';
 let width;
+let arrAble = [];
+let arrAble_s = [];
+let arrCells;
+let saveMarker = false;
+let arrFlagIndex = [];
+
 function gameStarting(width, height, ammountsBomb) {
+  arrAble = [];
   let containerCells = document.createElement('div');
   const containerField = document.createElement('div');
   const bodyHTML = document.getElementById('body');
@@ -24,6 +32,7 @@ function gameStarting(width, height, ammountsBomb) {
   scoreButton.innerText = 'Score';
   scoreButton.classList.add('buttonStyle');
   const buttonFlag = document.createElement('button');
+  buttonFlag.id = 'buttonFlag';
   buttonFlag.classList.add('buttonStyle');
   buttonFlag.innerText = `Mode flag: ${flagCount}`;
   scoreFlagMode.append(scoreButton);
@@ -69,7 +78,7 @@ function gameStarting(width, height, ammountsBomb) {
   buttonColorTheme.classList.add('buttonStyle');
   buttonColorTheme.innerText = 'Dark Theme';
 
-  if (mutting === true) {
+  if (mutting) {
     buttonMute.classList.add('buttonRestyle');
   }
   buttonMute.innerText = 'Mute';
@@ -104,9 +113,12 @@ function gameStarting(width, height, ammountsBomb) {
   const cellsCount = width * height;
   cellCreating(cellsCount);
   let countCellOpen = cellsCount - ammountsBomb;
-  
+
   let cells;
-  let arrCells;
+
+  cells = document.querySelectorAll('.cell');
+  arrCells = [...cells];
+  arrFlagIndex.length = arrCells.length;
 
   function cellsReturn() {
     cells = document.querySelectorAll('.cell');
@@ -114,6 +126,37 @@ function gameStarting(width, height, ammountsBomb) {
     console.log('arrCells.length - ', arrCells.length)
     return arrCells
   }
+
+  function soundRemoveFlag() {
+    if (mutting === false) {
+      const removeFlagSound = new Audio('sounds/removeFlag.mp3');
+      removeFlagSound.play();
+    }
+  }
+
+  function setListenerFlag() {
+    const cells_f = document.querySelectorAll('.cell');
+    const arrCells_f = [...cells];
+    arrCells.forEach((item) => {
+      item.addEventListener('click', () => {
+        if (item.lastChild.tagName === 'IMG') {
+          item.removeChild(item.lastChild)
+          flagCount -= 1;
+          buttonFlag.innerText = `Mode flag: ${flagCount}`;
+          soundRemoveFlag()
+        }
+      })
+    });
+  }
+
+  function loadStyleFlag() {
+    buttonFlag.innerText = `Mode flag: ${flagCount}`;
+    const flag = document.getElementById('buttonFlag');
+    if (flagMode) {
+      flagBtnRecoloring()
+    }
+  }
+
 
   function timeDisplaying(hour, minute, second) {
     if (minute < 10 && second < 10) {
@@ -153,6 +196,7 @@ function gameStarting(width, height, ammountsBomb) {
   function localStorageSaving() {
     localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
     localStorage.setItem('arrTimes', JSON.stringify(arrTimes));
+    localStorage.setItem('arrAble_s', JSON.stringify(arrAble_s));
     localStorage.setItem('timeSave', JSON.stringify(timeSave));
     localStorage.setItem('mutting', JSON.stringify(mutting));
     localStorage.setItem('difficult', JSON.stringify(difficult));
@@ -160,41 +204,41 @@ function gameStarting(width, height, ammountsBomb) {
     localStorage.setItem('flagMode', JSON.stringify(flagMode));
     localStorage.setItem('flagCount', JSON.stringify(flagCount));
     localStorage.setItem('minesAmmount', JSON.stringify(minesAmmount));
-    // localStorage.setItem('cells', JSON.stringify(cells));
     localStorage.setItem('cells', JSON.stringify(copyCells));
     localStorage.setItem('arrBombs', JSON.stringify(bombs));
     localStorage.setItem('height', JSON.stringify(height));
     localStorage.setItem('width', JSON.stringify(width));
+    localStorage.setItem('darkTheme', JSON.stringify(darkTheme));
   }
 
   function progressLoading() {
+    if (JSON.parse(localStorage.getItem('arrAble')) !== null) {
+      arrAble_s = JSON.parse(localStorage.getItem('arrAble_s'));
+    }
+    if (JSON.parse(localStorage.getItem('flagMode')) !== null) {
+      flagMode = JSON.parse(localStorage.getItem('flagMode'));
+    }
     if (JSON.parse(localStorage.getItem('arrClicks')) !== null) {
       arrClicks = JSON.parse(localStorage.getItem('arrClicks'));
     }
     if (JSON.parse(localStorage.getItem('arrTimes')) !== null) {
       arrTimes = JSON.parse(localStorage.getItem('arrTimes'));
     }
-    // if (JSON.parse(localStorage.getItem('mutting')) !== null) {
-    //   mutting = JSON.parse(localStorage.getItem('mutting'));
-    // }
-    // if (JSON.parse(localStorage.getItem('difficult')) !== null) {
-    //   difficult = JSON.parse(localStorage.getItem('difficult'));
-    // }
+    if (JSON.parse(localStorage.getItem('flagCount')) !== null) {
+      flagCount = JSON.parse(localStorage.getItem('flagCount'));
+    }
+    if (JSON.parse(localStorage.getItem('mutting')) !== null) {
+      mutting = JSON.parse(localStorage.getItem('mutting'));
+    }
+    if (JSON.parse(localStorage.getItem('darkTheme')) !== null) {
+      darkTheme = JSON.parse(localStorage.getItem('darkTheme'));
+    }
     if (JSON.parse(localStorage.getItem('countClick')) !== null) {
       countClick = JSON.parse(localStorage.getItem('countClick'));
     }
     if (JSON.parse(localStorage.getItem('timeSave')) !== null) {
       timeSave = JSON.parse(localStorage.getItem('timeSave'));
     }
-    // if (JSON.parse(localStorage.getItem('flagMode')) !== null) {
-    //   flagMode = JSON.parse(localStorage.getItem('flagMode'));
-    // }
-    // if (JSON.parse(localStorage.getItem('arrCells')) !== null) {
-    //   arrCells = JSON.parse(localStorage.getItem('arrCells'));
-    // }
-    // if (JSON.parse(localStorage.getItem('minesAmmount')) !== null) {
-    //   minesAmmount = JSON.parse(localStorage.getItem('minesAmmount'));
-    // }
   }
 
   buttonMute.addEventListener('click', () => {
@@ -233,7 +277,13 @@ function gameStarting(width, height, ammountsBomb) {
   function windowWinnig() {
     const windowWinner = document.createElement('div');
     windowWinner.classList.add('windowWinner');
-    windowWinner.innerText = `Hooray! You found all mines in ${timeDisplay.textContent} and ${countClick} moves!`;
+    let mineWord = '';
+    if (ammountsBomb > 1) {
+      mineWord = 'mines'
+    } else {
+      mineWord = 'mine'
+    }
+    windowWinner.innerText = `Hooray! You found ${ammountsBomb} ${mineWord} in ${timeDisplay.textContent} and ${countClick} moves!`;
     if (arrClicks.length === 10 && arrTimes.length === 10) {
       arrClicks.unshift(countClick);
       arrClicks.splice(9, 1);
@@ -346,7 +396,8 @@ function gameStarting(width, height, ammountsBomb) {
   });
 
   function flagBtnRecoloring() {
-    buttonFlag.classList.toggle('buttonRestyle');
+    const flag = document.getElementById('buttonFlag')
+    flag.classList.toggle('buttonRestyle');
     const soundModeFlag = new Audio('sounds/modeFlag.mp3');
     if (mutting === false) {
       soundModeFlag.play();
@@ -358,6 +409,12 @@ function gameStarting(width, height, ammountsBomb) {
     if (flagMode === true) flagMode = false;
     else if (flagMode === false) flagMode = true;
   });
+
+  function styleMute() {
+    if (mutting) {
+      buttonMute.classList.add('buttonRestyle');
+    }
+  }
 
   scoreButton.addEventListener('click', () => {
     const scoreSound = new Audio('sounds/score.mp3');
@@ -412,11 +469,10 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   function verificating(row, column) {
-    console.log(row, ' - row',column, ' - column', height, ' - height', width, ' - width')
-    return row >= 0
-         && row < height
-         && column >= 0
-         && column < width;
+    return row >= 0 &&
+      row < height &&
+      column >= 0 &&
+      column < width;
   }
 
   function bombChecking(row, column) {
@@ -472,13 +528,17 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   function cellOpening(row, column) {
-    console.log('check')
     if (!verificating(row, column)) return;
     const index = row * width + column;
     const cell = cells[index];
 
-    if (cell.disabled === true) return;
-    cell.disabled = true;
+    if (arrAble[index] === true) {
+      return
+    } else {
+      cell.disabled = true;
+      arrAble[index] = cell.disabled;
+    }
+
 
     if (bombChecking(row, column)) {
       const imageBomb = document.createElement('img');
@@ -510,8 +570,8 @@ function gameStarting(width, height, ammountsBomb) {
     }
     if (count === 0) {
       if (permisBonusSound === true) {
-        const bonusSound = new Audio('sounds/bonus.wav');
         if (mutting === false) {
+          const bonusSound = new Audio('sounds/bonus.mp3');
           bonusSound.play();
         }
         permisBonusSound = false;
@@ -532,18 +592,19 @@ function gameStarting(width, height, ammountsBomb) {
       if (event.target.tagName === 'P') {
         const index = arrCellsArg.indexOf(event.target);
         console.log(index, ' - index')
-        if (cells[index].disabled !== true) {
+        console.log(cells[index].disabled, ' - disabled\n', arrAble[index], ' - arrAble')
+        if (!arrAble[index]) {
           countClick += 1;
         }
         if (permisSpreadBomb === true) {
           bombRandoming(bombs, ammountsBomb, cellsCount, index);
           permisSpreadBomb = false;
-          console.log(bombs,'- arr', ammountsBomb,'- bmbsCount', cellsCount,'- ammountPiles', index,'- indexFirstStep')
+          console.log(bombs, '- arr', ammountsBomb, '- bmbsCount', cellsCount, '- ammountPiles', index, '- indexFirstStep')
         }
         const column = index % width;
         const row = (index - column) / width;
         if (flagMode === true) {
-          if (cells[index].disabled !== true) {
+          if (!arrAble[index]) {
             const imageFlag = document.createElement('img');
             imageFlag.src = 'flag.png';
             arrCellsArg[index].appendChild(imageFlag);
@@ -553,10 +614,7 @@ function gameStarting(width, height, ammountsBomb) {
               flagCount -= 1;
               buttonFlag.innerText = `Mode flag: ${flagCount}`;
               evnt.target.remove();
-              if (mutting === false) {
-                const removeFlagSound = new Audio('sounds/removeFlag.mp3');
-                removeFlagSound.play();
-              }
+              soundRemoveFlag()
             });
             if (mutting === false) {
               const flagSound = new Audio('sounds/flag.mp3');
@@ -574,82 +632,34 @@ function gameStarting(width, height, ammountsBomb) {
   }
   clickCellsListening(containerCells, cellsReturn());
 
-  // let copyField = containerCells.cloneNode(true);
-  
-  
-
   buttonSave.addEventListener('click', () => {
     timeSave.seconds = time.seconds;
     timeSave.minutes = time.minutes;
     timeSave.hours = time.hours;
     copyCells = containerCells.innerHTML;
     localStorageSaving();
-    // copyField = containerCells.cloneNode(true);
-    // console.log(copyCells)
     if (mutting === false) {
       const saveSound = new Audio('sounds/save.mp3');
       saveSound.play();
     }
   });
 
-let countRestart = 0;
+  let countRestart = 0;
 
-function createCells() {
-  containerCells = document.createElement('div');
-  containerCells.classList.add('containerCells')
-  height = JSON.parse(localStorage.getItem('height'));
-  width = JSON.parse(localStorage.getItem('width'));
-  containerCells.style.setProperty('--columnAmmount', height);
-  // cellCreating(cellsCount);
-  containerCells.innerHTML = JSON.parse(localStorage.getItem('cells'));
-  containerField.appendChild(containerCells);
-    // containerCells.appendChild(containerCells)
+  function createCells() {
+    containerCells = document.createElement('div');
+    containerCells.classList.add('containerCells')
+    height = JSON.parse(localStorage.getItem('height'));
+    width = JSON.parse(localStorage.getItem('width'));
+    containerCells.style.setProperty('--columnAmmount', height);
+    containerCells.innerHTML = JSON.parse(localStorage.getItem('cells'));
+    containerField.appendChild(containerCells);
     permisSpreadBomb = false;
     clickCellsListening(containerCells, cellsReturn());
-}
-
-  buttonLoad.addEventListener('click', () => {
-   
-      progressLoading();
-      time.seconds = timeSave.seconds;
-      time.minutes = timeSave.minutes;
-      time.hours = timeSave.hours;
-      clickDisplay.innerText = `Clicks: ${countClick}`;
-      containerCells.removeEventListener('click', clickCellsListening);
-      containerCells.remove();
-      createCells()
-      bombs = JSON.parse(localStorage.getItem('arrBombs'));
-      if (mutting === false) {
-        const loadSound = new Audio('sounds/load.mp3');
-        loadSound.play();
-      }
-      countRestart++;
-
-  });
-
-  function windowLoosing() {
-    if (loose === true) {
-      const windowBox = document.createElement('div');
-      windowBox.classList.add('windowOver');
-      bodyHTML.appendChild(windowBox);
-      windowBox.textContent = 'Game over. Try again';
-
-      const buttonRepeat = document.createElement('button');
-      buttonRepeat.classList.add('buttonRepeat');
-      buttonRepeat.textContent = 'OK';
-      windowBox.append(buttonRepeat);
-      buttonRepeat.addEventListener('click', () => {
-        bodyHTML.innerHTML = '';
-        const bleepSound = new Audio('sounds/bleep-sound.mp3');
-        if (mutting === false) {
-          bleepSound.play();
-        }
-        gameStarting(10, 10, 10);
-      });
-    }
   }
 
   function themeChanging() {
+
     scoreButton.classList.toggle('buttonDark');
     buttonFlag.classList.toggle('buttonDark');
     buttonRestart.classList.toggle('buttonDark');
@@ -667,11 +677,75 @@ function createCells() {
     bodyHTML.classList.toggle('bodyDark');
 
     const cellCopyes = document.querySelectorAll('.cell');
+
     cellCopyes.forEach((element) => {
       if (element.className.slice(0, -1) !== 'cell colorCode') {
         element.classList.toggle('cellDark');
+        console.log(element.className.slice(0, -1))
       }
     });
+    if (darkTheme) {
+      darkTheme = false;
+    } else {
+      darkTheme = true;
+    }
+
+  }
+
+  function loadColorTheme() {
+    if (darkTheme) {
+      themeChanging()
+      const cellCopyes = document.querySelectorAll('.cell');
+      cellCopyes.forEach((element) => {
+        if (element.className.slice(0, -1) !== 'cell colorCode') {
+          element.classList.add('cellDark');
+          console.log(element.className.slice(0, -1))
+        }
+      });
+    }
+  }
+
+  buttonLoad.addEventListener('click', () => {
+    arrAble = arrAble_s;
+    progressLoading();
+    time.seconds = timeSave.seconds;
+    time.minutes = timeSave.minutes;
+    time.hours = timeSave.hours;
+    clickDisplay.innerText = `Clicks: ${countClick}`;
+    containerCells.removeEventListener('click', clickCellsListening);
+    containerCells.remove();
+    createCells()
+    setListenerFlag()
+    loadStyleFlag()
+    styleMute()
+    loadColorTheme()
+    bombs = JSON.parse(localStorage.getItem('arrBombs'));
+    if (mutting === false) {
+      const loadSound = new Audio('sounds/load.mp3');
+      loadSound.play();
+    }
+    countRestart++;
+  });
+
+  function windowLoosing() {
+    if (loose === true) {
+      const windowBox = document.createElement('div');
+      windowBox.classList.add('windowOver');
+      bodyHTML.appendChild(windowBox);
+      windowBox.textContent = 'Game over. Try again';
+      const buttonRepeat = document.createElement('button');
+      buttonRepeat.classList.add('buttonRepeat');
+      buttonRepeat.textContent = 'OK';
+      windowBox.append(buttonRepeat);
+      buttonRepeat.addEventListener('click', () => {
+        bodyHTML.innerHTML = '';
+        const bleepSound = new Audio('sounds/bleep-sound.mp3');
+        if (mutting === false) {
+          bleepSound.play();
+        }
+        gameStarting(10, 10, 10);
+      });
+    }
   }
 
   buttonColorTheme.addEventListener('click', () => {
