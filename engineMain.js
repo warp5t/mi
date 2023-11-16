@@ -196,7 +196,7 @@ function gameStarting(width, height, ammountsBomb) {
   function localStorageSaving() {
     localStorage.setItem('arrClicks', JSON.stringify(arrClicks));
     localStorage.setItem('arrTimes', JSON.stringify(arrTimes));
-    localStorage.setItem('arrAble_s', JSON.stringify(arrAble_s));
+    localStorage.setItem('arrAble', JSON.stringify(arrAble));
     localStorage.setItem('timeSave', JSON.stringify(timeSave));
     localStorage.setItem('mutting', JSON.stringify(mutting));
     localStorage.setItem('difficult', JSON.stringify(difficult));
@@ -213,7 +213,7 @@ function gameStarting(width, height, ammountsBomb) {
 
   function progressLoading() {
     if (JSON.parse(localStorage.getItem('arrAble')) !== null) {
-      arrAble_s = JSON.parse(localStorage.getItem('arrAble_s'));
+      arrAble = JSON.parse(localStorage.getItem('arrAble'));
     }
     if (JSON.parse(localStorage.getItem('flagMode')) !== null) {
       flagMode = JSON.parse(localStorage.getItem('flagMode'));
@@ -706,13 +706,14 @@ function gameStarting(width, height, ammountsBomb) {
   }
 
   buttonLoad.addEventListener('click', () => {
-    arrAble = arrAble_s;
+
     progressLoading();
     time.seconds = timeSave.seconds;
     time.minutes = timeSave.minutes;
     time.hours = timeSave.hours;
     clickDisplay.innerText = `Clicks: ${countClick}`;
     containerCells.removeEventListener('click', clickCellsListening);
+    // arrAble_s = arrAble;
     containerCells.remove();
     createCells()
     setListenerFlag()
